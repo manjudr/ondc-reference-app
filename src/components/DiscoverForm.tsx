@@ -1,14 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DiscoverRequest } from '../types';
 
 interface DiscoverFormProps {
   onSubmit: (request: DiscoverRequest) => void;
   defaultRequest?: DiscoverRequest;
+  category: 'grocery' | 'pizza';
 }
 
-export default function DiscoverForm({ onSubmit, defaultRequest }: DiscoverFormProps) {
+export default function DiscoverForm({ onSubmit, defaultRequest, category }: DiscoverFormProps) {
   const [textSearch, setTextSearch] = useState(defaultRequest?.message.text_search || '');
-  const [category, setCategory] = useState<'grocery' | 'pizza'>('grocery');
+
+  // Keep the text search in sync with the selected category and default request,
+  // so switching between Grocery and Pizza pre-populates the appropriate example.
+  useEffect(() => {
+    const fallback =
+      category === 'grocery' ? 'organic rice basmati' : 'veg pizza margherita';
+    setTextSearch(defaultRequest?.message.text_search || fallback);
+  }, [category, defaultRequest]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,8 +27,8 @@ export default function DiscoverForm({ onSubmit, defaultRequest }: DiscoverFormP
         action: 'discover',
         domain: 'beckn.one:deg:retail:*',
         bap_id: category === 'grocery' ? 'grocery-app.example.com' : 'pizza-app.example.com',
-        bap_uri: category === 'grocery' 
-          ? 'https://grocery-app.example.com/bap' 
+        bap_uri: category === 'grocery'
+          ? 'https://grocery-app.example.com/bap'
           : 'https://pizza-app.example.com/bap',
         transaction_id: `${category}-txn-001-${new Date().toISOString().split('T')[0]}`,
         message_id: `${category}-msg-001-${new Date().toISOString().split('T')[0]}`,
@@ -58,19 +66,7 @@ export default function DiscoverForm({ onSubmit, defaultRequest }: DiscoverFormP
   return (
     <form onSubmit={handleSubmit} className="discover-form">
       <div className="form-group">
-        <label htmlFor="category">Category:</label>
-        <select
-          id="category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value as 'grocery' | 'pizza')}
-        >
-          <option value="grocery">Grocery</option>
-          <option value="pizza">Pizza</option>
-        </select>
-      </div>
-      
-      <div className="form-group">
-        <label htmlFor="textSearch">Search:</label>
+        <label htmlFor="textSearch">Search items</label>
         <input
           id="textSearch"
           type="text"

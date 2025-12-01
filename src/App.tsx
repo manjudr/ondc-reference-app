@@ -27,14 +27,10 @@ function App() {
   }, [category]);
 
   const handleDiscover = (request: DiscoverRequest) => {
-    // Determine category from request
-    const isGrocery = request.context.bap_id.includes('grocery');
-    setCategory(isGrocery ? 'grocery' : 'pizza');
-
     // Simulate API call - in real app, this would be an actual API call
     // For now, we'll use the static catalog responses
     setTimeout(() => {
-      if (isGrocery) {
+      if (category === 'grocery') {
         setCurrentCatalog(groceryCatalog as CatalogResponse);
         setCurrentRenderer(groceryRenderer as RendererConfig);
       } else {
@@ -47,32 +43,69 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>ONDC Reference App</h1>
-        <p>E-commerce Frontend using Beckn Protocol</p>
+        <div className="app-header-inner">
+          <div>
+            <h1>ONDC Reference App</h1>
+            <p>E-commerce frontend using Beckn Protocol</p>
+          </div>
+          <div className="app-header-badge">
+            <span>Retail</span>
+          </div>
+        </div>
       </header>
 
-      <main className="app-main">
-        <section className="discover-section">
-          <h2>Discover Products</h2>
-          <DiscoverForm 
-            onSubmit={handleDiscover}
-            defaultRequest={category === 'grocery' ? groceryDiscover as DiscoverRequest : pizzaDiscover as DiscoverRequest}
-          />
+      <main className="app-main two-column-layout">
+        <section className="discover-pane">
+          <div className="discover-card">
+            <h2 className="pane-title">Discover Products</h2>
+            <p className="pane-subtitle">
+              Run sample Beckn <code>discover</code> requests for Grocery or Pizza and inspect the rendered catalog.
+            </p>
+            <DiscoverForm
+              onSubmit={handleDiscover}
+              category={category}
+              defaultRequest={category === 'grocery' ? (groceryDiscover as DiscoverRequest) : (pizzaDiscover as DiscoverRequest)}
+            />
+            <div className="category-hint">
+              <button
+                type="button"
+                className={`category-pill ${category === 'grocery' ? 'pill-active' : ''}`}
+                onClick={() => setCategory('grocery')}
+              >
+                Grocery
+              </button>
+              <button
+                type="button"
+                className={`category-pill ${category === 'pizza' ? 'pill-active' : ''}`}
+                onClick={() => setCategory('pizza')}
+              >
+                Pizza
+              </button>
+            </div>
+          </div>
         </section>
 
-        {currentCatalog && currentRenderer && (
-          <section className="results-section">
-            <h2>Search Results</h2>
-            {currentCatalog.message.catalogs.map((catalog) => (
-              <CatalogView
-                key={catalog['beckn:id']}
-                catalog={catalog}
-                rendererConfig={currentRenderer}
-                viewType="discoveryCard"
-              />
-            ))}
-          </section>
-        )}
+        <section className="results-pane">
+          <div className="results-card">
+            <div className="results-header">
+              <h2 className="pane-title">Search Results</h2>
+              {!currentCatalog && <p className="results-empty">Run a discover to see matching offers.</p>}
+            </div>
+
+            {currentCatalog && currentRenderer && (
+              <div className="results-content">
+                {currentCatalog.message.catalogs.map((catalog) => (
+                  <CatalogView
+                    key={catalog['beckn:id']}
+                    catalog={catalog}
+                    rendererConfig={currentRenderer}
+                    viewType="discoveryCard"
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
       </main>
     </div>
   );
