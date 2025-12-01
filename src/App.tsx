@@ -4,40 +4,62 @@ import DiscoverForm from './components/DiscoverForm';
 import CatalogView from './components/CatalogView';
 import { DiscoverRequest, CatalogResponse, RendererConfig } from './types';
 
-// Import data files
+// Import sample discover requests (local), but fetch catalogs/renderers from remote spec URLs
 import groceryDiscover from './data/grocery-discover.json';
-import groceryCatalog from './data/grocery-catalog.json';
 import pizzaDiscover from './data/pizza-discover.json';
-import pizzaCatalog from './data/pizza-catalog.json';
-import groceryRenderer from './data/grocery-renderer.json';
-import pizzaRenderer from './data/pizza-renderer.json';
+
+const GROCERY_CATALOG_URL =
+  'https://raw.githubusercontent.com/beckn/protocol-specifications-new/ondc-schema/examples/RetailGrocery/02_on_discover/grocery-catalog.json';
+const PIZZA_CATALOG_URL =
+  'https://raw.githubusercontent.com/beckn/protocol-specifications-new/ondc-schema/examples/RetailPizza/02_on_discover/pizza-catalog.json';
+
+const GROCERY_RENDERER_URL =
+  'https://raw.githubusercontent.com/beckn/protocol-specifications-new/ondc-schema/schema/GroceryItem/v1/renderer.json';
+const PIZZA_RENDERER_URL =
+  'https://raw.githubusercontent.com/beckn/protocol-specifications-new/ondc-schema/schema/PizzaItem/v1/renderer.json';
 
 function App() {
   const [currentCatalog, setCurrentCatalog] = useState<CatalogResponse | null>(null);
   const [currentRenderer, setCurrentRenderer] = useState<RendererConfig | null>(null);
   const [category, setCategory] = useState<'grocery' | 'pizza'>('grocery');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Load renderer configs
-  useEffect(() => {
-    if (category === 'grocery') {
-      setCurrentRenderer(groceryRenderer as RendererConfig);
-    } else {
-      setCurrentRenderer(pizzaRenderer as RendererConfig);
+  // Helper to load catalog + renderer from remote URLs for a given category
+  const loadCatalogAndRenderer = async (activeCategory: 'grocery' | 'pizza') => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const isGrocery = activeCategory === 'grocery';
+      const [catalogRes, rendererRes] = await Promise.all([
+        fetch(isGrocery ? GROCERY_CATALOG_URL : PIZZA_CATALOG_URL),
+        fetch(isGrocery ? GROCERY_RENDERER_URL : PIZZA_RENDERER_URL),
+      ]);
+
+      if (!catalogRes.ok || !rendererRes.ok) {
+        throw new Error('Failed to load catalog or renderer from remote specification URLs');
+      }
+
+      const catalogJson = (await catalogRes.json()) as CatalogResponse;
+      const rendererJson = (await rendererRes.json()) as RendererConfig;
+
+      setCurrentCatalog(catalogJson);
+      setCurrentRenderer(rendererJson);
+    } catch (e: any) {
+      console.error(e);
+      setError(e?.message || 'Unexpected error while loading catalog');
+      setCurrentCatalog(null);
+      setCurrentRenderer(null);
+    } finally {
+      setIsLoading(false);
     }
-  }, [category]);
+  };
 
   const handleDiscover = (request: DiscoverRequest) => {
-    // Simulate API call - in real app, this would be an actual API call
-    // For now, we'll use the static catalog responses
-    setTimeout(() => {
-      if (category === 'grocery') {
-        setCurrentCatalog(groceryCatalog as CatalogResponse);
-        setCurrentRenderer(groceryRenderer as RendererConfig);
-      } else {
-        setCurrentCatalog(pizzaCatalog as CatalogResponse);
-        setCurrentRenderer(pizzaRenderer as RendererConfig);
-      }
-    }, 500);
+    // In a real app, `request` would be POSTed to a BPP. Here we just
+    // use it to trigger loading the appropriate sample catalog/renderer
+    // from the ondc-schema branch of the spec repo.
+    void loadCatalogAndRenderer(category);
   };
 
   return (
@@ -89,7 +111,11 @@ function App() {
           <div className="results-card">
             <div className="results-header">
               <h2 className="pane-title">Search Results</h2>
-              {!currentCatalog && <p className="results-empty">Run a discover to see matching offers.</p>}
+              {!currentCatalog && !isLoading && !error && (
+                <p className="results-empty">Run a discover to see matching offers.</p>
+              )}
+              {isLoading && <p className="results-empty">Loading catalog from spec repository…</p>}
+              {error && <p className="results-empty" style={{ color: '#b91c1c' }}>{error}</p>}
             </div>
 
             {currentCatalog && currentRenderer && (
