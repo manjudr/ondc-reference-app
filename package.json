@@ -1,0 +1,35 @@
+{
+  "name": "ondc-reference-app",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npx vite",
+    "build": "npx tsc && npx vite build",
+    "lint": "npx eslint .",
+    "preview": "npx vite preview"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@types/node": "^24.10.1",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "esbuild": "^0.27.0",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "globals": "^16.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rollup": "^4.53.3",
+    "typescript": "^5.0.2",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^4.4.5"
+  }
+}

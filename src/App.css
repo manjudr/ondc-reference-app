@@ -1,0 +1,250 @@
+.app {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.app-header {
+  background-color: #646cff;
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.app-header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2.5em;
+}
+
+.app-header p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.app-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.discover-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.discover-section h2 {
+  margin-top: 0;
+  color: #213547;
+}
+
+.discover-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #213547;
+}
+
+.results-section {
+  margin-top: 2rem;
+}
+
+.results-section h2 {
+  color: #213547;
+  margin-bottom: 1rem;
+}
+
+.catalog-view {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.catalog-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.catalog-header h2 {
+  color: #213547;
+  font-size: 1.8em;
+}
+
+.catalog-header p {
+  color: #666;
+  margin: 0.5rem 0 0 0;
+}
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.item-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  background: white;
+  transition: box-shadow 0.3s;
+}
+
+.item-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Grocery Item Styles */
+.grocery-item-card,
+.pizza-item-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.grocery-item-header,
+.pizza-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.grocery-item-name,
+.pizza-item-name {
+  margin: 0;
+  font-size: 1.3em;
+  color: #213547;
+  flex: 1;
+}
+
+.dietary-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.dietary-veg {
+  background-color: #4CAF50;
+  color: #FFFFFF;
+}
+
+.dietary-non-veg {
+  background-color: #F44336;
+  color: #FFFFFF;
+}
+
+.grocery-item-short-desc,
+.pizza-item-short-desc {
+  color: #666;
+  margin: 0;
+}
+
+.grocery-item-details,
+.pizza-customization {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.grocery-quantity,
+.grocery-manufacturer {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9em;
+}
+
+.quantity-value {
+  font-weight: 600;
+}
+
+.customization-item {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9em;
+}
+
+.customization-label {
+  font-weight: 600;
+  color: #666;
+}
+
+.customization-value {
+  color: #213547;
+}
+
+.grocery-item-rating,
+.pizza-item-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9em;
+}
+
+.rating-stars {
+  color: #ffa500;
+}
+
+.rating-count {
+  color: #666;
+}
+
+.grocery-item-price,
+.pizza-item-price {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #213547;
+}
+
+.price-currency {
+  margin-right: 0.25rem;
+}
+
+.price-value {
+  font-size: 1.1em;
+}
+
+/* Compact card styles */
+.item-card-compact {
+  padding: 1rem;
+}
+
+.compact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.compact-header h4 {
+  margin: 0;
+  font-size: 1em;
+}
+
+.compact-quantity,
+.compact-customization {
+  font-size: 0.85em;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.compact-price {
+  font-weight: 600;
+  color: #213547;
+}
