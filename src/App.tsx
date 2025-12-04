@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './App.css';
+import Sidebar from './components/Sidebar';
 import DiscoverForm from './components/DiscoverForm';
 import CatalogView from './components/CatalogView';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -27,7 +28,11 @@ const PIZZA_RENDERER_URL =
 // Set VITE_USE_LOCAL_DATA=true in .env file or use the UI toggle
 const USE_LOCAL_DATA = import.meta.env.VITE_USE_LOCAL_DATA === 'true';
 
+type AppSection = 'bap' | 'bpp' | 'admin';
+
 function App() {
+  const [activeSection, setActiveSection] = useState<AppSection>('bap');
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [currentCatalog, setCurrentCatalog] = useState<CatalogResponse | null>(null);
   const [currentRenderer, setCurrentRenderer] = useState<RendererConfig | null>(null);
   const [category, setCategory] = useState<'grocery' | 'pizza'>('grocery');
@@ -100,21 +105,9 @@ function App() {
     }
   };
 
-  return (
-    <div className="app">
-      <header className="app-header">
-        <div className="app-header-inner">
-      <div>
-            <h1>ONDC Reference App</h1>
-            <p>E-commerce frontend using Beckn Protocol</p>
-          </div>
-          <div className="app-header-badge">
-            <span>Retail</span>
-          </div>
-      </div>
-      </header>
-
-      <main className="app-main two-column-layout">
+  // BAP App Component (current implementation)
+  const BAPApp = () => (
+    <main className="app-main two-column-layout">
         <section className="discover-pane">
           <div className="discover-card">
             <h2 className="pane-title">Discover Products</h2>
@@ -205,7 +198,66 @@ function App() {
           </div>
         </section>
       </main>
+  );
+
+  // BPP App Component (placeholder)
+  const BPPApp = () => (
+    <main className="app-main">
+      <div className="results-card">
+        <div className="results-header">
+          <h2 className="pane-title">BPP App</h2>
+          <p className="results-empty">BPP (Buyer Platform Provider) functionality coming soon...</p>
+        </div>
       </div>
+    </main>
+  );
+
+  // ONDC Admin Component (placeholder)
+  const ONDCAdmin = () => (
+    <main className="app-main">
+      <div className="results-card">
+        <div className="results-header">
+          <h2 className="pane-title">ONDC Admin</h2>
+          <p className="results-empty">ONDC Admin panel coming soon...</p>
+        </div>
+      </div>
+    </main>
+  );
+
+  const renderActiveSection = () => {
+    switch (activeSection) {
+      case 'bap':
+        return <BAPApp />;
+      case 'bpp':
+        return <BPPApp />;
+      case 'admin':
+        return <ONDCAdmin />;
+      default:
+        return <BAPApp />;
+    }
+  };
+
+  return (
+    <div className={`app ${isSidebarCollapsed ? 'has-collapsed-sidebar' : ''}`}>
+      <Sidebar 
+        activeSection={activeSection} 
+        onSectionChange={setActiveSection}
+        onCollapseChange={setIsSidebarCollapsed}
+      />
+      <header className="app-header">
+        <div className="app-header-inner">
+          <div>
+            <h1>ONDC Reference App</h1>
+            <p>E-commerce frontend using Beckn Protocol</p>
+          </div>
+          <div className="app-header-badge">
+            <span>Retail</span>
+          </div>
+        </div>
+      </header>
+
+      {renderActiveSection()}
+    </div>
   );
 }
 
