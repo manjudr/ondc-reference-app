@@ -5,6 +5,7 @@ import DiscoverForm from './components/DiscoverForm';
 import CatalogView from './components/CatalogView';
 import LoadingSpinner from './components/LoadingSpinner';
 import CSVUpload from './components/CSVUpload';
+import ONDCAdmin from './components/ONDCAdmin';
 import type { DiscoverRequest, CatalogResponse, RendererConfig } from './types';
 
 // Import sample discover requests (local)
@@ -219,17 +220,6 @@ function App() {
     );
   };
 
-  // ONDC Admin Component (placeholder)
-  const ONDCAdmin = () => (
-    <main className="app-main">
-      <div className="results-card">
-        <div className="results-header">
-          <h2 className="pane-title">ONDC Admin</h2>
-          <p className="results-empty">ONDC Admin panel coming soon...</p>
-        </div>
-      </div>
-    </main>
-  );
 
   const renderActiveSection = () => {
     switch (activeSection) {

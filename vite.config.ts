@@ -7,13 +7,19 @@ export default defineConfig({
   server: {
     port: 5173,
     open: true,
-    proxy: {
-      '/api/beckn': {
-        target: 'https://34.93.141.21.sslip.io',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/beckn/, '/beckn'),
-        secure: false, // Allow self-signed certificates
+      proxy: {
+        '/api/beckn': {
+          target: 'https://34.93.141.21.sslip.io',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/beckn/, '/beckn'),
+          secure: false, // Allow self-signed certificates
+        },
+        '/api/credentials': {
+          target: 'http://34.100.210.253:6000',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/credentials/, '/api/credentials'),
+          secure: false,
+        }
       }
-    }
   }
 })
