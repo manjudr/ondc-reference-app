@@ -14,12 +14,18 @@ export default defineConfig({
           rewrite: (path) => path.replace(/^\/api\/beckn/, '/beckn'),
           secure: false, // Allow self-signed certificates
         },
-        '/api/credentials': {
-          target: 'http://34.100.210.253:6000',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/credentials/, '/api/credentials'),
-          secure: false,
-        }
-      }
+              '/api/credentials': {
+                target: 'http://34.100.210.253:6000',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/api\/credentials/, '/api/credentials'),
+                secure: false,
+              },
+              '/api/tunnel': {
+                target: 'http://34.100.215.201:8084',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/api\/tunnel/, '/tunnel'),
+                secure: false,
+              }
+            }
   }
 })
