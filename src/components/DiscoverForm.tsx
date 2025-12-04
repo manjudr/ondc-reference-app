@@ -10,13 +10,13 @@ interface DiscoverFormProps {
 
 const DISCOVER_API_URL = import.meta.env.VITE_DISCOVER_API_URL || '/api/beckn/discover';
 
-type SearchMode = 'text' | 'geo-expression';
+type SearchMode = 'filters' | 'text';
 
 export default function DiscoverForm({ onDiscover, defaultRequest, category, useLocalCatalog = false }: DiscoverFormProps) {
-  const [searchMode, setSearchMode] = useState<SearchMode>('text');
+  const [searchMode, setSearchMode] = useState<SearchMode>('filters');
   const [textSearch, setTextSearch] = useState(defaultRequest?.message.text_search || '');
-  const [expression, setExpression] = useState('');
-  const [coordinates, setCoordinates] = useState('');
+  const [expression, setExpression] = useState('$[?(@.beckn:itemAttributes.nutritionalInfo.nutrient=="Sodium" && @.beckn:itemAttributes.dietaryClassification == "veg")]');
+  const [coordinates, setCoordinates] = useState('12.9716,77.5946');
   const [radius, setRadius] = useState(5000);
   const [coordinateError, setCoordinateError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -95,7 +95,7 @@ export default function DiscoverForm({ onDiscover, defaultRequest, category, use
         return;
       }
     } else {
-      // GEO Expression mode: validate coordinates if provided
+      // Filters mode: validate coordinates if provided
       if (coordinates.trim() && !validateCoordinates(coordinates)) {
         onDiscover(null, coordinateError || 'Invalid coordinates');
         return;
@@ -124,7 +124,7 @@ export default function DiscoverForm({ onDiscover, defaultRequest, category, use
     if (searchMode === 'text') {
       message.text_search = textSearch.trim();
     } else {
-      // GEO Expression mode
+      // Filters mode
       if (expression.trim()) {
         message.filters = {
           type: 'jsonpath',
@@ -211,9 +211,11 @@ export default function DiscoverForm({ onDiscover, defaultRequest, category, use
   const isFormValid = () => {
     if (useLocalCatalog) return true;
     
+    // Enable button if ANY input has a value
     if (searchMode === 'text') {
       return textSearch.trim().length > 0;
     } else {
+      // In filters mode, enable if expression OR coordinates has value (and no coordinate errors)
       if (coordinateError) return false;
       return expression.trim().length > 0 || coordinates.trim().length > 0;
     }
@@ -225,19 +227,19 @@ export default function DiscoverForm({ onDiscover, defaultRequest, category, use
       <div className="search-mode-toggle">
         <button
           type="button"
+          className={`toggle-option ${searchMode === 'filters' ? 'toggle-active' : ''}`}
+          onClick={() => setSearchMode('filters')}
+          disabled={isLoading}
+        >
+          Filters
+        </button>
+        <button
+          type="button"
           className={`toggle-option ${searchMode === 'text' ? 'toggle-active' : ''}`}
           onClick={() => setSearchMode('text')}
           disabled={isLoading}
         >
           Text Search
-        </button>
-        <button
-          type="button"
-          className={`toggle-option ${searchMode === 'geo-expression' ? 'toggle-active' : ''}`}
-          onClick={() => setSearchMode('geo-expression')}
-          disabled={isLoading}
-        >
-          GEO Expression
         </button>
       </div>
 
@@ -257,8 +259,8 @@ export default function DiscoverForm({ onDiscover, defaultRequest, category, use
         </div>
       )}
 
-      {/* GEO Expression Mode */}
-      {searchMode === 'geo-expression' && (
+      {/* Filters Mode */}
+      {searchMode === 'filters' && (
         <>
           <div className="form-group">
             <label htmlFor="expression">JSONPath Expression (optional)</label>
@@ -267,7 +269,7 @@ export default function DiscoverForm({ onDiscover, defaultRequest, category, use
               value={expression}
               onChange={(e) => setExpression(e.target.value)}
               placeholder='e.g., $[?(@.beckn:itemAttributes.nutritionalInfo.nutrient==&quot;Sodium&quot; && @.beckn:itemAttributes.dietaryClassification == &quot;veg&quot;)]'
-              rows={3}
+              rows={6}
               disabled={isLoading || useLocalCatalog}
               style={{ fontFamily: 'monospace', fontSize: '0.875rem' }}
             />
