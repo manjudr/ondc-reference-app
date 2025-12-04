@@ -31,15 +31,14 @@ WORKDIR /app
 RUN apk add --no-cache wget
 
 # Copy package files
-COPY package*.json ./
+COPY package.json ./
 
-# Install vite globally for preview server
-RUN npm install -g vite@^4.4.5
+# Install vite locally for preview server (needed to load vite.config.ts if present)
+RUN npm install vite@^4.4.5
 
 # Copy built application from builder stage
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/vite.config.ts ./vite.config.ts
-COPY --from=builder /app/index.html ./index.html
 
 # Create a non-root user for security
 RUN addgroup -g 1001 -S nodejs && \
