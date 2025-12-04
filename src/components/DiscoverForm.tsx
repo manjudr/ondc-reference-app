@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { DiscoverRequest, CatalogResponse } from '../types';
+import { generateUUID } from '../utils/uuid';
 
 interface DiscoverFormProps {
   onDiscover: (catalogResponse: CatalogResponse | null, error: string | null) => void;
@@ -158,8 +159,8 @@ export default function DiscoverForm({ onDiscover, onLoading, defaultRequest, ca
         domain: 'beckn.one:retail',
         bap_id: 'sandbox-retail-np1.com',
         bap_uri: 'https://sandbox-retail-np1.com/bap',
-        transaction_id: crypto.randomUUID(),
-        message_id: crypto.randomUUID(),
+        transaction_id: generateUUID(),
+        message_id: generateUUID(),
         timestamp: new Date().toISOString(),
         ttl: 'PT30S',
         schema_context: category === 'grocery'
