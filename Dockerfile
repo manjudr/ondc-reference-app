@@ -8,11 +8,12 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copy package files
-# Note: Ensure package-lock.json is not excluded by .dockerignore
-COPY package.json package-lock.json ./
+COPY package.json ./
 
 # Install dependencies (including devDependencies for build)
-RUN npm ci
+# Using npm install instead of npm ci since package-lock.json is gitignored
+# and may not be available in Docker build context
+RUN npm install
 
 # Copy application source code
 COPY . .
