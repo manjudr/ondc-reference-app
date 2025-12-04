@@ -279,11 +279,12 @@ export default function ONDCAdmin() {
                     'schema:name': provider?.['beckn:descriptor']['schema:name'] || ''
                   }
                 },
-                'beckn:itemAttributes': {
+                  'beckn:itemAttributes': {
                   ...(item['beckn:itemAttributes'] || {}),
                   '@context': schemaContext,
                   '@type': itemType,
                   credentials: {
+                    ...(item['beckn:itemAttributes']?.credentials || {}),
                     provider: {
                       url: credentialData.pdf.viewUrl,
                       id: credentialData.credentialId,
@@ -321,6 +322,7 @@ export default function ONDCAdmin() {
                   '@context': schemaContext,
                   '@type': itemType,
                   credentials: {
+                    ...(item['beckn:itemAttributes']?.credentials || {}),
                     item: {
                       url: credentialData.pdf.viewUrl,
                       id: credentialData.credentialId,
