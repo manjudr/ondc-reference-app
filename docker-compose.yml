@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  ondc-reference-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ondc-reference-app:1.0.0
+    container_name: ondc-reference-app
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=production
+      - VITE_DISCOVER_API_URL=${VITE_DISCOVER_API_URL:-/api/beckn/discover}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5173"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
