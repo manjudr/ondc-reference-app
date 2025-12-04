@@ -297,7 +297,7 @@ export default function DiscoverForm({ onDiscover, onLoading, defaultRequest, ca
           onClick={() => updateSearchMode('text')}
           disabled={isLoading}
         >
-          Text Search
+          NL Search
         </button>
       </div>
 

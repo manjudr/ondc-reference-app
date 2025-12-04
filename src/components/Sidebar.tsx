@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './Sidebar.css';
 
-type AppSection = 'bap' | 'bpp' | 'admin';
+type AppSection = 'bap' | 'bpp' | 'admin' | 'bpp-admin';
 
 interface SidebarProps {
   activeSection: AppSection;
@@ -22,6 +22,7 @@ export default function Sidebar({ activeSection, onSectionChange, onCollapseChan
     { id: 'bap' as AppSection, label: 'BAP', description: 'Consumer App', icon: '🛒' },
     { id: 'bpp' as AppSection, label: 'BPP', description: 'Seller App', icon: '🏬' },
     { id: 'admin' as AppSection, label: 'Admin', description: 'ONDC Admin', icon: '⚙️' },
+    { id: 'bpp-admin' as AppSection, label: 'BPP Admin', description: 'BPP Configuration', icon: '🔧' },
   ];
 
   return (

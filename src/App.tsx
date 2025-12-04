@@ -6,6 +6,7 @@ import CatalogView from './components/CatalogView';
 import LoadingSpinner from './components/LoadingSpinner';
 import CSVUpload from './components/CSVUpload';
 import ONDCAdmin from './components/ONDCAdmin';
+import BPPAdmin from './components/BPPAdmin';
 import type { DiscoverRequest, CatalogResponse, RendererConfig } from './types';
 
 // Import sample discover requests (local)
@@ -30,7 +31,7 @@ const PIZZA_RENDERER_URL =
 // Set VITE_USE_LOCAL_DATA=true in .env file or use the UI toggle
 const USE_LOCAL_DATA = import.meta.env.VITE_USE_LOCAL_DATA === 'true';
 
-type AppSection = 'bap' | 'bpp' | 'admin';
+type AppSection = 'bap' | 'bpp' | 'admin' | 'bpp-admin';
 
 function App() {
   const [activeSection, setActiveSection] = useState<AppSection>('bap');
@@ -229,6 +230,8 @@ function App() {
         return <BPPApp />;
       case 'admin':
         return <ONDCAdmin />;
+      case 'bpp-admin':
+        return <BPPAdmin />;
       default:
         return <BAPApp />;
     }
