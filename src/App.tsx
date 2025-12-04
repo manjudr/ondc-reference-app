@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar';
 import DiscoverForm from './components/DiscoverForm';
 import CatalogView from './components/CatalogView';
 import LoadingSpinner from './components/LoadingSpinner';
+import CSVUpload from './components/CSVUpload';
 import type { DiscoverRequest, CatalogResponse, RendererConfig } from './types';
 
 // Import sample discover requests (local)
@@ -200,17 +201,23 @@ function App() {
       </main>
   );
 
-  // BPP App Component (placeholder)
-  const BPPApp = () => (
-    <main className="app-main">
-      <div className="results-card">
-        <div className="results-header">
-          <h2 className="pane-title">BPP App</h2>
-          <p className="results-empty">BPP (Buyer Platform Provider) functionality coming soon...</p>
+  // BPP App Component
+  const BPPApp = () => {
+    return (
+      <main className="app-main">
+        <div className="results-card">
+          <div className="results-header">
+            <h2 className="pane-title">BPP - Catalog Upload</h2>
+            <p className="pane-subtitle">
+              Upload your catalog CSV file to transform it into Beckn format
+            </p>
+          </div>
+          
+          <CSVUpload />
         </div>
-      </div>
-    </main>
-  );
+      </main>
+    );
+  };
 
   // ONDC Admin Component (placeholder)
   const ONDCAdmin = () => (
