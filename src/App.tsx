@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import DiscoverForm from './components/DiscoverForm';
 import CatalogView from './components/CatalogView';
+import LoadingSpinner from './components/LoadingSpinner';
 import type { DiscoverRequest, CatalogResponse, RendererConfig } from './types';
 
 // Import sample discover requests (local)
@@ -37,7 +38,6 @@ function App() {
 
 
   const handleDiscover = async (catalogResponse: CatalogResponse | null, error: string | null) => {
-    setIsLoading(true);
     setError(null);
 
     try {
@@ -46,6 +46,8 @@ function App() {
         const isGrocery = category === 'grocery';
         const localCatalog = (isGrocery ? groceryCatalogLocal : pizzaCatalogLocal) as unknown as CatalogResponse;
         setCurrentCatalog(localCatalog);
+        // Load the renderer based on category
+        await loadRenderer(category);
       } else {
         // Use API response
         if (error) {
@@ -57,22 +59,16 @@ function App() {
 
         if (catalogResponse) {
           setCurrentCatalog(catalogResponse);
-        } else {
-          setError('No catalog response received');
-          setCurrentCatalog(null);
-          return;
+          // Load the renderer based on category
+          await loadRenderer(category);
         }
+        // If catalogResponse is null and no error, we're still loading (handled by loading state)
       }
-
-      // Load the renderer based on category
-      await loadRenderer(category);
     } catch (e: any) {
       console.error(e);
       setError(e?.message || 'Unexpected error');
       setCurrentCatalog(null);
       setCurrentRenderer(null);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -127,6 +123,7 @@ function App() {
             </p>
             <DiscoverForm
               onDiscover={handleDiscover}
+              onLoading={setIsLoading}
               category={category}
               defaultRequest={category === 'grocery' ? (groceryDiscover as DiscoverRequest) : (pizzaDiscover as DiscoverRequest)}
               useLocalCatalog={useLocalCatalog}
@@ -186,11 +183,14 @@ function App() {
               {!currentCatalog && !isLoading && !error && (
                 <p className="results-empty">Run a discover to see matching offers.</p>
               )}
-              {isLoading && <p className="results-empty">Loading {useLocalCatalog ? 'local catalog' : 'catalog from API'}…</p>}
               {error && <p className="results-empty" style={{ color: '#b91c1c' }}>{error}</p>}
             </div>
 
-            {currentCatalog && currentRenderer && (
+            {isLoading && (
+              <LoadingSpinner message={useLocalCatalog ? 'Loading local catalog...' : 'Discovering products...'} />
+            )}
+
+            {!isLoading && currentCatalog && currentRenderer && (
               <div className="results-content">
                 {currentCatalog.message.catalogs.map((catalog) => (
                   <CatalogView
