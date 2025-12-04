@@ -104,14 +104,14 @@ function App() {
     <div className="app">
       <header className="app-header">
         <div className="app-header-inner">
-          <div>
+      <div>
             <h1>ONDC Reference App</h1>
             <p>E-commerce frontend using Beckn Protocol</p>
           </div>
           <div className="app-header-badge">
             <span>Retail</span>
           </div>
-        </div>
+      </div>
       </header>
 
       <main className="app-main two-column-layout">
@@ -142,9 +142,9 @@ function App() {
                 onClick={() => setCategory('pizza')}
               >
                 Food & Beverage
-              </button>
+        </button>
             </div>
-            <div className="data-source-toggle" style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #e5e7eb' }}>
+            {/* <div className="data-source-toggle" style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #e5e7eb' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
                   <input
@@ -172,7 +172,7 @@ function App() {
                   <span>Use local renderer</span>
                 </label>
               </div>
-            </div>
+            </div> */}
           </div>
         </section>
 
@@ -205,7 +205,7 @@ function App() {
           </div>
         </section>
       </main>
-    </div>
+      </div>
   );
 }
 
