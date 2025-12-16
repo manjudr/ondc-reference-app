@@ -17,9 +17,18 @@ type SearchMode = 'filters' | 'text';
 // Helper function to get default expression based on category
 const getDefaultExpression = (category: 'grocery' | 'pizza'): string => {
   if (category === 'grocery') {
-    return '$[?(@.beckn:itemAttributes.nutritionalInfo.nutrient=="Sodium" && @.beckn:itemAttributes.dietaryClassification == "veg")]';
+    return '$[?(@.beckn:itemAttributes.nutritionalInfo.nutrient=="Protein" && @.beckn:itemAttributes.dietaryClassification == "veg")]';
   } else {
-    return "$[?(@.beckn:itemAttributes.size=='Regular' && @.beckn:itemAttributes.toppings[*] == 'Olives')]";
+    return "$[?(@.beckn:itemAttributes.size=='Large' && @.beckn:itemAttributes.toppings[*] == 'Jalapenos')]";
+  }
+};
+
+// Helper function to get default coordinates based on category
+const getDefaultCoordinates = (category: 'grocery' | 'pizza'): string => {
+  if (category === 'grocery') {
+    return '19.1529,72.935';
+  } else {
+    return '28.5375,77.2408';
   }
 };
 
@@ -33,11 +42,37 @@ export default function DiscoverForm({ onDiscover, onLoading, defaultRequest, ca
     })()
   );
   
+  // Track previous category to detect actual category changes
+  const previousCategoryRef = useRef<string | null>(null);
+  // Track if user has manually modified expression/coordinates
+  const expressionModifiedRef = useRef(false);
+  const coordinatesModifiedRef = useRef(false);
+  
+  // Helper to get persisted or default expression
+  const getInitialExpression = (cat: 'grocery' | 'pizza'): string => {
+    const saved = sessionStorage.getItem(`discoverForm_expression_${cat}`);
+    return saved || getDefaultExpression(cat);
+  };
+  
+  // Helper to get persisted or default coordinates
+  const getInitialCoordinates = (cat: 'grocery' | 'pizza'): string => {
+    const saved = sessionStorage.getItem(`discoverForm_coordinates_${cat}`);
+    return saved || getDefaultCoordinates(cat);
+  };
+  
+  // Helper to get persisted or default text search
+  const getInitialTextSearch = (cat: 'grocery' | 'pizza'): string => {
+    const saved = sessionStorage.getItem(`discoverForm_textSearch_${cat}`);
+    if (saved) return saved;
+    const textFallback = cat === 'grocery' ? 'organic rice basmati' : 'veg pizza margherita';
+    return defaultRequest?.message.text_search || textFallback;
+  };
+  
   const [searchMode, setSearchMode] = useState<SearchMode>(searchModeRef.current);
-  const [textSearch, setTextSearch] = useState(defaultRequest?.message.text_search || '');
-  const [expression, setExpression] = useState(() => getDefaultExpression(category));
-  const [coordinates, setCoordinates] = useState('12.9716,77.5946');
-  const [radius, setRadius] = useState(5000);
+  const [textSearch, setTextSearch] = useState(() => getInitialTextSearch(category));
+  const [expression, setExpression] = useState(() => getInitialExpression(category));
+  const [coordinates, setCoordinates] = useState(() => getInitialCoordinates(category));
+  const [radius, setRadius] = useState(1000);
   const [coordinateError, setCoordinateError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -58,17 +93,32 @@ export default function DiscoverForm({ onDiscover, onLoading, defaultRequest, ca
       setSearchMode(searchModeRef.current);
     }
 
-    // Set text search default
-    const textFallback =
-      category === 'grocery' ? 'organic rice basmati' : 'veg pizza margherita';
-    const newTextSearch = defaultRequest?.message.text_search || textFallback;
-    setTextSearch(newTextSearch);
-
-    // Set JSONPath expression default based on category (always use category-based default)
-    setExpression(getDefaultExpression(category));
-
-    // Set coordinates default (same for both categories)
-    setCoordinates('12.9716,77.5946');
+    // Only reset expression/coordinates/textSearch if category actually changed
+    const categoryChanged = previousCategoryRef.current !== null && previousCategoryRef.current !== category;
+    
+    if (categoryChanged) {
+      // Category changed - load persisted values for the new category, or use defaults
+      const newExpression = getInitialExpression(category);
+      const newCoordinates = getInitialCoordinates(category);
+      const newTextSearch = getInitialTextSearch(category);
+      setExpression(newExpression);
+      setCoordinates(newCoordinates);
+      setTextSearch(newTextSearch);
+      // Reset modification flags when category changes (user can modify for new category)
+      expressionModifiedRef.current = false;
+      coordinatesModifiedRef.current = false;
+    } else if (previousCategoryRef.current === null) {
+      // Initial mount - load persisted values or use defaults
+      const initialExpression = getInitialExpression(category);
+      const initialCoordinates = getInitialCoordinates(category);
+      const initialTextSearch = getInitialTextSearch(category);
+      setExpression(initialExpression);
+      setCoordinates(initialCoordinates);
+      setTextSearch(initialTextSearch);
+    }
+    // If category hasn't changed, preserve current values (user may have modified them)
+    
+    previousCategoryRef.current = category;
     
     // Note: We intentionally don't reset searchMode here to preserve user's choice
     // The searchMode state (whether 'filters' or 'text') persists across category changes
@@ -87,7 +137,7 @@ export default function DiscoverForm({ onDiscover, onLoading, defaultRequest, ca
     const parts = value.replace(/\s/g, '').split(',');
     
     if (parts.length !== 2) {
-      setCoordinateError('Please enter coordinates as: latitude,longitude (e.g., 12.9716,77.5946)');
+      setCoordinateError('Please enter coordinates as: latitude,longitude (e.g., 19.1747,72.8063)');
       return false;
     }
     
@@ -125,7 +175,11 @@ export default function DiscoverForm({ onDiscover, onLoading, defaultRequest, ca
       return; // Don't update if invalid characters
     }
     
+    // Mark coordinates as manually modified
+    coordinatesModifiedRef.current = true;
     setCoordinates(value);
+    // Persist to sessionStorage
+    sessionStorage.setItem(`discoverForm_coordinates_${category}`, value);
     validateCoordinates(value);
   };
 
@@ -309,7 +363,12 @@ export default function DiscoverForm({ onDiscover, onLoading, defaultRequest, ca
             id="textSearch"
             type="text"
             value={textSearch}
-            onChange={(e) => setTextSearch(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setTextSearch(value);
+              // Persist to sessionStorage
+              sessionStorage.setItem(`discoverForm_textSearch_${category}`, value);
+            }}
             placeholder={category === 'grocery' ? 'e.g., organic rice basmati' : 'e.g., veg pizza margherita'}
             required={!useLocalCatalog}
             disabled={isLoading || useLocalCatalog}
@@ -325,7 +384,14 @@ export default function DiscoverForm({ onDiscover, onLoading, defaultRequest, ca
             <textarea
               id="expression"
               value={expression}
-              onChange={(e) => setExpression(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                // Mark expression as manually modified
+                expressionModifiedRef.current = true;
+                setExpression(value);
+                // Persist to sessionStorage
+                sessionStorage.setItem(`discoverForm_expression_${category}`, value);
+              }}
               placeholder={category === 'grocery' 
                 ? 'e.g., $[?(@.beckn:itemAttributes.nutritionalInfo.nutrient=="Sodium" && @.beckn:itemAttributes.dietaryClassification == "veg")]'
                 : 'e.g., $[?(@.beckn:itemAttributes.size==\'Regular\' && @.beckn:itemAttributes.toppings[*] == \'Olives\')]'}
