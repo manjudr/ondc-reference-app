@@ -10,9 +10,21 @@ export interface ClientConfig {
     };
     theme: {
         mode: 'light' | 'dark';
-        fontFamily: string;
-        primaryColor: string;
-        backgroundColor: string;
+        palette: {
+            primary: { main: string; light: string; dark: string; contrastText: string; };
+            background: { default: string; paper: string; surface: string; };
+            text: { primary: string; secondary: string; disabled: string; };
+            action: { active: string; hover: string; selected: string; };
+        };
+        typography: {
+            fontFamily: string;
+            h3: { fontSize: string; fontWeight: number; };
+            h4: { fontSize: string; fontWeight: number; };
+        };
+        shape: { borderRadius: number; searchBarRadius: number; buttonRadius: number; };
+        gradients: { primary: string; heroText: string; surface: string; };
+        shadows: { soft: string; medium: string; hard: string; colored: string; };
+        icons: { [key: string]: string; };
     };
     layout: {
         header: {
@@ -66,6 +78,7 @@ export interface BaseViewConfig {
     subtitle?: string;
     api: string;
     context?: Record<string, any>;
+    labels?: Record<string, string>;
 }
 
 export interface DiscoveryViewConfig extends BaseViewConfig {

@@ -35,8 +35,8 @@ const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, desktopOpen, onMobileClos
   if (!config) return null;
 
   const { sidebar } = config.layout;
-  const primaryColor = config.theme.primaryColor;
-  const fontFamily = config.theme.fontFamily;
+  const primaryColor = config.theme.palette.primary.main;
+  const fontFamily = config.theme.typography.fontFamily;
 
   // Helper to dynamically load icons
   const renderIcon = (iconName: string) => {
@@ -57,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, desktopOpen, onMobileClos
         </Box>
       )}
 
-      <Box sx={{ overflow: 'auto', mt: isMobile ? 2 : 6, px: 2, pb: 4 }}>
+      <Box sx={{ overflow: 'auto', mt: isMobile ? 0 : 8, px: 2, pb: 4 }}>
         <Typography
           variant="overline"
           sx={{

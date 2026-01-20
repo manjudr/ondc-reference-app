@@ -52,26 +52,125 @@
                         ],
                         "description": "The color scheme mode."
                     },
-                    "fontFamily": {
-                        "type": "string",
-                        "description": "CSS font-family string used throughout the app."
+                    "palette": {
+                        "type": "object",
+                        "description": "Color palette definitions.",
+                        "properties": {
+                            "primary": {
+                                "type": "object",
+                                "properties": {
+                                    "main": {
+                                        "type": "string"
+                                    },
+                                    "light": {
+                                        "type": "string"
+                                    },
+                                    "dark": {
+                                        "type": "string"
+                                    },
+                                    "contrastText": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "main"
+                                ]
+                            },
+                            "background": {
+                                "type": "object",
+                                "properties": {
+                                    "default": {
+                                        "type": "string"
+                                    },
+                                    "paper": {
+                                        "type": "string"
+                                    },
+                                    "surface": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "default"
+                                ]
+                            },
+                            "text": {
+                                "type": "object",
+                                "properties": {
+                                    "primary": {
+                                        "type": "string"
+                                    },
+                                    "secondary": {
+                                        "type": "string"
+                                    },
+                                    "disabled": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "action": {
+                                "type": "object",
+                                "properties": {
+                                    "active": {
+                                        "type": "string"
+                                    },
+                                    "hover": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
                     },
-                    "primaryColor": {
-                        "type": "string",
-                        "title": "Color",
-                        "pattern": "^(#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})|rgba?\\(.*\\))$",
-                        "description": "The primary brand color used for buttons and active states."
+                    "typography": {
+                        "type": "object",
+                        "description": "Typography settings.",
+                        "properties": {
+                            "fontFamily": {
+                                "type": "string"
+                            }
+                        }
                     },
-                    "backgroundColor": {
-                        "type": "string",
-                        "title": "Color",
-                        "pattern": "^(#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})|rgba?\\(.*\\))$",
-                        "description": "The global background color of the application page."
+                    "shape": {
+                        "type": "object",
+                        "properties": {
+                            "borderRadius": {
+                                "type": "number",
+                                "description": "Border radius for standard cards and containers."
+                            },
+                            "searchBarRadius": {
+                                "type": "number",
+                                "description": "Border radius specifically for search bars and top-level inputs."
+                            },
+                            "buttonRadius": {
+                                "type": "number",
+                                "description": "Border radius specifically for primary and secondary buttons."
+                            }
+                        }
+                    },
+                    "gradients": {
+                        "type": "object",
+                        "description": "Custom gradient definitions.",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "shadows": {
+                        "type": "object",
+                        "description": "Custom shadow definitions.",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "icons": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
                     }
                 },
                 "required": [
                     "mode",
-                    "primaryColor"
+                    "palette",
+                    "typography"
                 ]
             },
             "layout": {
@@ -361,6 +460,13 @@
                                     "type",
                                     "options"
                                 ]
+                            }
+                        },
+                        "labels": {
+                            "type": "object",
+                            "description": "Customizable UI labels for this view.",
+                            "additionalProperties": {
+                                "type": "string"
                             }
                         }
                     },

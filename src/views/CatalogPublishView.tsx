@@ -13,11 +13,9 @@ import {
     useTheme,
     alpha
 } from '@mui/material';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import CloseIcon from '@mui/icons-material/Close';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import StorefrontIcon from '@mui/icons-material/Storefront'; // Added for Hero consistency
+import * as Icons from '@mui/icons-material';
 import { useConfig } from '../config/ConfigProvider';
 import type { CatalogPublishViewConfig } from '../config/types';
 
@@ -42,8 +40,19 @@ const CatalogPublishView: React.FC = () => {
         );
     }
 
-    const primaryColor = config.theme.primaryColor;
-    const fontFamily = config.theme.fontFamily;
+    const primaryColor = config.theme.palette.primary.main;
+    const fontFamily = config.theme.typography.fontFamily;
+    const backgroundColor = config.theme.palette.background.default;
+
+    // Helper to dynamically load icons
+    const renderIcon = (iconName: string, props: any = {}) => {
+        // @ts-ignore
+        const IconComponent = Icons[iconName] || Icons.HelpOutline;
+        return <IconComponent {...props} />;
+    };
+
+    const publishIcon = config.theme.icons.publish || 'Storefront';
+    const uploadIcon = config.theme.icons.upload || 'CloudUpload';
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
@@ -96,277 +105,282 @@ const CatalogPublishView: React.FC = () => {
     };
 
     return (
-        <Box
-            sx={{
-                bgcolor: config.theme.backgroundColor,
-                minHeight: '100vh',
-                py: 6,
-                fontFamily: fontFamily
-            }}
-        >
-            <Container maxWidth="md">
-                <Box mb={6} textAlign="center">
-                    <Typography
-                        variant="h3"
-                        component="h1"
-                        fontWeight={800}
+        <Box sx={{ minHeight: '100vh', bgcolor: backgroundColor }}>
+            {/* Hero Section */}
+            {/* Top Branding & Upload Area */}
+            <Box
+                sx={{
+                    pt: 8,
+                    pb: 6,
+                    background: config!.theme.gradients.surface
+                }}
+            >
+                <Container maxWidth="md">
+                    <Paper
+                        elevation={0}
                         sx={{
-                            fontFamily: fontFamily,
-                            letterSpacing: '-0.02em',
-                            background: `linear-gradient(135deg, #1e293b 0%, ${primaryColor} 100%)`,
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            mb: 1,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: 2
+                            p: { xs: 4, md: 6 },
+                            borderRadius: `${config!.theme.shape.searchBarRadius}px`,
+                            bgcolor: config!.theme.palette.background.paper,
+                            boxShadow: config!.theme.shadows.medium,
+                            border: '1px solid',
+                            borderColor: 'divider',
+                            overflow: 'hidden'
                         }}
                     >
-                        <StorefrontIcon sx={{ fontSize: 40, color: primaryColor }} />
-                        {viewConfig.title}
-                    </Typography>
-                    {viewConfig.subtitle && (
-                        <Typography
-                            variant="body1"
-                            color="text.secondary"
-                            sx={{ fontFamily: fontFamily, maxWidth: 600, mx: 'auto', lineHeight: 1.6 }}
-                        >
-                            {viewConfig.subtitle}
-                        </Typography>
-                    )}
-                </Box>
-
-                <Paper
-                    elevation={0}
-                    sx={{
-                        p: { xs: 4, md: 6 },
-                        bgcolor: '#ffffff',
-                        borderRadius: 6,
-                        boxShadow: '0 16px 48px rgba(0,0,0,0.06)'
-                    }}
-                >
-                    <Stack spacing={4}>
-                        {!file && !success && (
-                            <Box
-                                onDragEnter={handleDrag}
-                                onDragLeave={handleDrag}
-                                onDragOver={handleDrag}
-                                onDrop={handleDrop}
-                                onClick={() => inputRef.current?.click()}
+                        <Box mb={6} textAlign="center">
+                            <Typography
+                                variant="h3"
+                                component="h1"
+                                fontWeight={700}
                                 sx={{
-                                    border: '2px dashed',
-                                    borderColor: dragActive ? primaryColor : alpha(primaryColor, 0.2),
-                                    borderRadius: 4,
-                                    py: 8,
-                                    px: 4,
-                                    textAlign: 'center',
-                                    cursor: 'pointer',
-                                    backgroundColor: dragActive ? alpha(primaryColor, 0.04) : '#fafafa',
-                                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                                    position: 'relative',
-                                    overflow: 'hidden',
-                                    '&:hover': {
-                                        borderColor: primaryColor,
-                                        backgroundColor: alpha(primaryColor, 0.02),
-                                        transform: 'translateY(-2px)',
-                                        boxShadow: '0 12px 24px rgba(0,0,0,0.04)'
-                                    }
+                                    fontFamily: fontFamily,
+                                    letterSpacing: '-0.02em',
+                                    background: config!.theme.gradients.heroText,
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    mb: 1,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: 2
                                 }}
                             >
-                                <input
-                                    ref={inputRef}
-                                    accept=".json,.csv"
-                                    style={{ display: 'none' }}
-                                    id="upload-file-input"
-                                    type="file"
-                                    onChange={handleFileChange}
-                                />
-                                <Stack spacing={3} alignItems="center">
-                                    <Box
-                                        sx={{
-                                            width: 80,
-                                            height: 80,
-                                            borderRadius: '50%',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            background: `linear-gradient(135deg, ${alpha(primaryColor, 0.1)} 0%, ${alpha(primaryColor, 0.2)} 100%)`,
-                                            color: primaryColor,
-                                            mb: 1
-                                        }}
-                                    >
-                                        <CloudUploadIcon sx={{ fontSize: 40 }} />
-                                    </Box>
-                                    <Box>
-                                        <Typography variant="h6" sx={{ fontFamily: fontFamily, fontWeight: 700, mb: 1, color: '#334155' }}>
-                                            Drag & Drop your catalog
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary" sx={{ fontFamily: fontFamily, mb: 2 }}>
-                                            or file browser will open automatically
-                                        </Typography>
-                                        <Button
-                                            variant="outlined"
-                                            size="small"
+                                {renderIcon(publishIcon, { sx: { fontSize: 40, color: primaryColor } })}
+                                {viewConfig!.title}
+                            </Typography>
+                            {viewConfig!.subtitle && (
+                                <Typography
+                                    variant="body1"
+                                    color="text.secondary"
+                                    sx={{ fontFamily: fontFamily, maxWidth: 660, mx: 'auto', lineHeight: 1.6 }}
+                                >
+                                    {viewConfig!.subtitle}
+                                </Typography>
+                            )}
+                        </Box>
+                        <Stack spacing={4}>
+                            {!file && !success && (
+                                <Box
+                                    onDragEnter={handleDrag}
+                                    onDragLeave={handleDrag}
+                                    onDragOver={handleDrag}
+                                    onDrop={handleDrop}
+                                    onClick={() => inputRef.current?.click()}
+                                    sx={{
+                                        border: '2px dashed',
+                                        borderColor: dragActive ? primaryColor : alpha(primaryColor, 0.2),
+                                        borderRadius: `${config!.theme.shape.borderRadius}px`,
+                                        py: 8,
+                                        px: 4,
+                                        textAlign: 'center',
+                                        cursor: 'pointer',
+                                        backgroundColor: dragActive ? alpha(primaryColor, 0.06) : alpha(primaryColor, 0.02),
+                                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        position: 'relative',
+                                        overflow: 'hidden',
+                                        '&:hover': {
+                                            borderColor: primaryColor,
+                                            backgroundColor: alpha(primaryColor, 0.02),
+                                            transform: 'translateY(-2px)',
+                                            boxShadow: config!.theme.shadows.soft
+                                        }
+                                    }}
+                                >
+                                    <input
+                                        ref={inputRef}
+                                        accept=".json,.csv"
+                                        style={{ display: 'none' }}
+                                        id="upload-file-input"
+                                        type="file"
+                                        onChange={handleFileChange}
+                                    />
+                                    <Stack spacing={3} alignItems="center">
+                                        <Box
                                             sx={{
-                                                borderRadius: 20,
-                                                textTransform: 'none',
-                                                borderColor: alpha(primaryColor, 0.5),
+                                                width: 80,
+                                                height: 80,
+                                                borderRadius: '50%',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                background: `linear-gradient(135deg, ${alpha(primaryColor, 0.1)} 0%, ${alpha(primaryColor, 0.2)} 100%)`,
                                                 color: primaryColor,
-                                                fontWeight: 600,
-                                                px: 3,
-                                                '&:hover': {
-                                                    borderColor: primaryColor,
-                                                    bgcolor: alpha(primaryColor, 0.05)
-                                                }
+                                                mb: 1
                                             }}
                                         >
-                                            Browse Files
-                                        </Button>
-                                    </Box>
-                                    <Typography variant="caption" sx={{ color: 'text.disabled', fontFamily: fontFamily, pt: 2, display: 'block' }}>
-                                        Supports JSON and CSV formats
-                                    </Typography>
-                                </Stack>
-                            </Box>
-                        )}
-
-                        {file && (
-                            <Fade in>
-                                <Paper
-                                    elevation={0}
-                                    sx={{
-                                        p: 3,
-                                        bgcolor: alpha(primaryColor, 0.05),
-                                        border: '1px solid',
-                                        borderColor: alpha(primaryColor, 0.2),
-                                        borderRadius: 2
-                                    }}
-                                >
-                                    <Stack direction="row" alignItems="center" spacing={2}>
-                                        <InsertDriveFileIcon sx={{ color: primaryColor, fontSize: 32 }} />
-                                        <Box flexGrow={1}>
-                                            <Typography variant="subtitle1" fontWeight={600} sx={{ fontFamily: fontFamily }}>
-                                                {file.name}
-                                            </Typography>
-                                            <Typography variant="caption" color="text.secondary" sx={{ fontFamily: fontFamily }}>
-                                                {(file.size / 1024).toFixed(2)} KB
-                                            </Typography>
+                                            {renderIcon(uploadIcon, { sx: { fontSize: 40 } })}
                                         </Box>
-                                        {!uploading && (
-                                            <IconButton onClick={clearFile} size="small" sx={{ color: 'text.secondary', '&:hover': { color: 'error.main' } }}>
-                                                <CloseIcon />
-                                            </IconButton>
-                                        )}
-                                    </Stack>
-                                    {uploading && (
-                                        <Box mt={2}>
-                                            <LinearProgress
-                                                variant="indeterminate"
+                                        <Box>
+                                            <Typography variant="h6" sx={{ fontFamily: fontFamily, fontWeight: 700, mb: 1, color: config!.theme.palette.text.primary }}>
+                                                {viewConfig.labels?.dropTitle || "Drag & Drop your catalog"}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary" sx={{ fontFamily: fontFamily, mb: 2 }}>
+                                                {viewConfig.labels?.dropSub || "or file browser will open automatically"}
+                                            </Typography>
+                                            <Button
+                                                variant="outlined"
+                                                size="small"
                                                 sx={{
-                                                    height: 6,
-                                                    borderRadius: 3,
-                                                    bgcolor: alpha(primaryColor, 0.1),
-                                                    '& .MuiLinearProgress-bar': {
-                                                        bgcolor: primaryColor
+                                                    borderRadius: `${config!.theme.shape.buttonRadius}px`,
+                                                    textTransform: 'none',
+                                                    borderColor: alpha(primaryColor, 0.5),
+                                                    color: primaryColor,
+                                                    fontWeight: 600,
+                                                    px: 3,
+                                                    '&:hover': {
+                                                        borderColor: primaryColor,
+                                                        bgcolor: alpha(primaryColor, 0.05)
                                                     }
                                                 }}
-                                            />
-                                            <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block', textAlign: 'center', fontFamily: fontFamily }}>
-                                                Uploading catalog data...
-                                            </Typography>
+                                            >
+                                                {viewConfig.labels?.browseButton || "Browse Files"}
+                                            </Button>
                                         </Box>
-                                    )}
-                                </Paper>
-                            </Fade>
-                        )}
+                                        <Typography variant="caption" sx={{ color: 'text.disabled', fontFamily: fontFamily, pt: 2, display: 'block' }}>
+                                            {viewConfig.labels?.formatsText || "Supports JSON and CSV formats"}
+                                        </Typography>
+                                    </Stack>
+                                </Box>
+                            )}
 
-                        {success && (
-                            <Fade in>
-                                <Paper
-                                    elevation={0}
+                            {file && (
+                                <Fade in>
+                                    <Paper
+                                        elevation={0}
+                                        sx={{
+                                            p: 3,
+                                            bgcolor: alpha(primaryColor, 0.05),
+                                            border: '1px solid',
+                                            borderColor: alpha(primaryColor, 0.2),
+                                            borderRadius: `${Math.max(4, config!.theme.shape.borderRadius / 2)}px`
+                                        }}
+                                    >
+                                        <Stack direction="row" alignItems="center" spacing={2}>
+                                            <InsertDriveFileIcon sx={{ color: primaryColor, fontSize: 32 }} />
+                                            <Box flexGrow={1}>
+                                                <Typography variant="subtitle1" fontWeight={600} sx={{ fontFamily: fontFamily }}>
+                                                    {file!.name}
+                                                </Typography>
+                                                <Typography variant="caption" color="text.secondary" sx={{ fontFamily: fontFamily }}>
+                                                    {(file!.size / 1024).toFixed(2)} KB
+                                                </Typography>
+                                            </Box>
+                                            {!uploading && (
+                                                <IconButton onClick={clearFile} size="small" sx={{ color: 'text.secondary', '&:hover': { color: 'error.main' } }}>
+                                                    <CloseIcon />
+                                                </IconButton>
+                                            )}
+                                        </Stack>
+                                        {uploading && (
+                                            <Box mt={2}>
+                                                <LinearProgress
+                                                    variant="indeterminate"
+                                                    sx={{
+                                                        height: 6,
+                                                        borderRadius: `${config!.theme.shape.borderRadius}px`,
+                                                        bgcolor: alpha(primaryColor, 0.1),
+                                                        '& .MuiLinearProgress-bar': {
+                                                            bgcolor: primaryColor
+                                                        }
+                                                    }}
+                                                />
+                                                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block', textAlign: 'center', fontFamily: fontFamily }}>
+                                                    {viewConfig.labels?.uploadingText || "Uploading catalog data..."}
+                                                </Typography>
+                                            </Box>
+                                        )}
+                                    </Paper>
+                                </Fade>
+                            )}
+
+                            {success && (
+                                <Fade in>
+                                    <Paper
+                                        elevation={0}
+                                        sx={{
+                                            p: 4,
+                                            borderRadius: `${config!.theme.shape.borderRadius}px`,
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            bgcolor: alpha(primaryColor, 0.05),
+                                            border: `1px solid ${alpha(primaryColor, 0.2)}`
+                                        }}
+                                    >
+                                        <Box
+                                            sx={{
+                                                width: 64,
+                                                height: 64,
+                                                borderRadius: `${config!.theme.shape.buttonRadius}px`,
+                                                bgcolor: alpha(primaryColor, 0.1),
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                color: primaryColor,
+                                                mb: 2
+                                            }}
+                                        >
+                                            {renderIcon(config!.theme.icons.success || 'CheckCircle', { sx: { fontSize: 32 } })}
+                                        </Box>
+                                        <Typography variant="h6" fontWeight={700} sx={{ fontFamily: fontFamily, color: config!.theme.palette.text.primary, mb: 1 }}>
+                                            {viewConfig.labels?.successTitle || "Published Successfully!"}
+                                        </Typography>
+                                        <Typography variant="body2" sx={{ fontFamily: fontFamily, color: 'text.secondary', mb: 3, textAlign: 'center' }}>
+                                            {viewConfig.labels?.successSub || "Your catalog has been broadcast to the network."}
+                                        </Typography>
+                                        <Button
+                                            variant="text"
+                                            onClick={() => setSuccess(false)}
+                                            sx={{
+                                                color: primaryColor,
+                                                fontWeight: 600,
+                                                textTransform: 'none',
+                                                '&:hover': { bgcolor: alpha(primaryColor, 0.1) }
+                                            }}
+                                        >
+                                            {viewConfig.labels?.resetButton || "Upload Another Catalog"}
+                                        </Button>
+                                    </Paper>
+                                </Fade>
+                            )}
+
+                            <Box textAlign="center">
+                                <Button
+                                    variant="contained"
+                                    size="large"
+                                    disabled={!file || uploading}
+                                    onClick={handleUpload}
                                     sx={{
-                                        p: 4,
-                                        borderRadius: 4,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        bgcolor: '#f0fdf4', // green-50
-                                        border: '1px solid #bbf7d0' // green-200
+                                        px: 6,
+                                        py: 1.2,
+                                        borderRadius: `${config!.theme.shape.buttonRadius}px`,
+                                        textTransform: 'none',
+                                        fontSize: '0.95rem',
+                                        fontWeight: 700,
+                                        color: config!.theme.palette.primary.contrastText,
+                                        fontFamily: fontFamily,
+                                        background: config!.theme.gradients.primary,
+                                        boxShadow: `0 8px 20px -6px ${alpha(primaryColor, 0.4)}`,
+                                        '&:hover': {
+                                            background: primaryColor,
+                                            boxShadow: `0 12px 24px -6px ${alpha(primaryColor, 0.5)}`,
+                                            transform: 'translateY(-1px)'
+                                        },
+                                        '&:disabled': {
+                                            background: 'rgba(0,0,0,0.12)',
+                                            boxShadow: 'none'
+                                        },
+                                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                                     }}
                                 >
-                                    <Box
-                                        sx={{
-                                            width: 64,
-                                            height: 64,
-                                            borderRadius: '50%',
-                                            bgcolor: '#dcfce7', // green-100
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            color: '#16a34a',
-                                            mb: 2
-                                        }}
-                                    >
-                                        <CheckCircleIcon sx={{ fontSize: 32 }} />
-                                    </Box>
-                                    <Typography variant="h6" fontWeight={700} sx={{ fontFamily: fontFamily, color: '#166534', mb: 1 }}>
-                                        Published Successfully!
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ fontFamily: fontFamily, color: '#15803d', mb: 3, textAlign: 'center' }}>
-                                        Your catalog has been broadcast to the network.
-                                    </Typography>
-                                    <Button
-                                        variant="text"
-                                        onClick={() => setSuccess(false)}
-                                        sx={{
-                                            color: '#16a34a',
-                                            fontWeight: 600,
-                                            textTransform: 'none',
-                                            '&:hover': { bgcolor: '#dcfce7' }
-                                        }}
-                                    >
-                                        Upload Another Catalog
-                                    </Button>
-                                </Paper>
-                            </Fade>
-                        )}
-
-                        <Box textAlign="center">
-                            <Button
-                                variant="contained"
-                                size="large"
-                                disabled={!file || uploading}
-                                onClick={handleUpload}
-                                sx={{
-                                    px: 6,
-                                    py: 1.2,
-                                    borderRadius: 50,
-                                    textTransform: 'none',
-                                    fontSize: '0.95rem',
-                                    fontWeight: 700,
-                                    color: '#ffffff', // Force white text
-                                    fontFamily: fontFamily,
-                                    background: `linear-gradient(135deg, ${primaryColor} 0%, ${alpha(primaryColor, 0.8)} 100%)`,
-                                    boxShadow: `0 8px 20px -6px ${alpha(primaryColor, 0.4)}`,
-                                    '&:hover': {
-                                        background: primaryColor,
-                                        boxShadow: `0 12px 24px -6px ${alpha(primaryColor, 0.5)}`,
-                                        transform: 'translateY(-1px)'
-                                    },
-                                    '&:disabled': {
-                                        background: 'rgba(0,0,0,0.12)',
-                                        boxShadow: 'none'
-                                    },
-                                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-                                }}
-                            >
-                                {uploading ? 'Publishing...' : 'Publish Catalog'}
-                            </Button>
-                        </Box>
-                    </Stack>
-                </Paper>
-            </Container>
+                                    {uploading ? (viewConfig.labels?.publishingButton || 'Publishing...') : (viewConfig.labels?.publishButton || 'Publish Catalog')}
+                                </Button>
+                            </Box>
+                        </Stack>
+                    </Paper>
+                </Container>
+            </Box>
         </Box>
     );
 };

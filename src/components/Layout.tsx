@@ -19,16 +19,16 @@ const Layout: React.FC = () => {
     const theme = createTheme({
         palette: {
             mode: config.theme.mode || 'light',
-            primary: {
-                main: config.theme.primaryColor || '#1976d2',
-            },
+            primary: config.theme.palette.primary,
             background: {
-                default: config.theme.backgroundColor || '#f5f5f5',
-            }
+                default: config.theme.palette.background.default,
+                paper: config.theme.palette.background.paper,
+            },
+            text: config.theme.palette.text,
+            action: config.theme.palette.action,
         },
-        typography: {
-            fontFamily: config.theme.fontFamily || '"Roboto", "Helvetica", "Arial", sans-serif',
-        },
+        typography: config.theme.typography,
+        shape: config.theme.shape,
         components: {
             MuiAppBar: {
                 styleOverrides: {

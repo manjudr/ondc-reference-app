@@ -1,6 +1,7 @@
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { AppConfig, ClientConfig } from './types';
+import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+import type { AppConfig, ClientConfig } from './types';
 import { validateConfig } from './validator';
 import { CircularProgress, Box, Typography, Alert, AlertTitle } from '@mui/material';
 
@@ -19,7 +20,8 @@ const ConfigContext = createContext<ConfigContextType>({
 export const useConfig = () => useContext(ConfigContext);
 
 export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [config, setConfig] = useState<ClientConfig | null>(null);
+    const location = useLocation();
+    const [fullConfig, setFullConfig] = useState<AppConfig | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -38,29 +40,7 @@ export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ childr
                     throw new Error(`Invalid Configuration:\n${validation.errors?.join('\n')}`);
                 }
 
-                const fullConfig = validation.config as AppConfig;
-
-                // Determine active tenant based on URL
-                // Logic: Find first config where pathname starts with config.endpoint
-                const path = window.location.pathname;
-                let activeConfig = fullConfig.find((c: ClientConfig) => path.startsWith(c.endpoint));
-
-                // If no match (e.g. root path '/'), default to first config
-                // NOTE: Proper handling should be a redirect in the Router, 
-                // but for Context init we'll grab the first one if root.
-                if (!activeConfig) {
-                    if (path === '/' || path === '') {
-                        activeConfig = fullConfig[0];
-                    } else {
-                        // If path is something like '/unknown', we won't find a config.
-                        // We can either error out or default. 
-                        // For strictly multi-tenant, maybe we should default to [0] 
-                        // and let the Router handle the 404 or Redirect.
-                        activeConfig = fullConfig[0];
-                    }
-                }
-
-                setConfig(activeConfig || null);
+                setFullConfig(validation.config as AppConfig);
             } catch (err: any) {
                 setError(err.message || 'Unknown error loading configuration');
             } finally {
@@ -70,6 +50,28 @@ export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
         fetchConfig();
     }, []);
+
+    const activeConfig = useMemo(() => {
+        if (!fullConfig) return null;
+
+        const path = location.pathname;
+        let found = fullConfig.find((c: ClientConfig) => path.startsWith(c.endpoint));
+
+        if (!found) {
+            if (path === '/' || path === '') {
+                found = fullConfig[0];
+            } else {
+                found = fullConfig[0];
+            }
+        }
+        return found;
+    }, [fullConfig, location.pathname]);
+
+    const contextValue = useMemo(() => ({
+        config: activeConfig,
+        isLoading,
+        error
+    }), [activeConfig, isLoading, error]);
 
     if (isLoading) {
         return (
@@ -93,7 +95,7 @@ export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
 
     return (
-        <ConfigContext.Provider value={{ config, isLoading, error }}>
+        <ConfigContext.Provider value={contextValue}>
             {children}
         </ConfigContext.Provider>
     );
