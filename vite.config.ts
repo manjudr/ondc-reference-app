@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
-    base: mode === 'production' ? '/cds-reference-app/' : '/',
+    base: mode === 'production' ? '/ondc-reference-app/' : '/',
     plugins: [react()],
     server: {
       port: 5173,

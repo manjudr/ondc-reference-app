@@ -1,6 +1,7 @@
 {
   "name": "ondc-reference-app",
   "private": true,
+  "homepage": "https://manjudr.github.io/ondc-reference-app/",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
