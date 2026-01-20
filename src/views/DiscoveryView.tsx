@@ -122,8 +122,8 @@ const DiscoveryView: React.FC = () => {
             {/* Top Branding & Search Area */}
             <Box
                 sx={{
-                    pt: 8,
-                    pb: 6,
+                    pt: { xs: 4, sm: 6, md: 8 },
+                    pb: { xs: 3, sm: 4, md: 6 },
                     background: config.theme.gradients.surface
                 }}
             >
@@ -131,7 +131,7 @@ const DiscoveryView: React.FC = () => {
                     <Paper
                         elevation={0}
                         sx={{
-                            p: 4,
+                            p: { xs: 2, sm: 3, md: 4 },
                             borderRadius: `${config.theme.shape.searchBarRadius}px`,
                             bgcolor: config.theme.palette.background.paper,
                             boxShadow: config.theme.shadows.soft,
@@ -139,7 +139,7 @@ const DiscoveryView: React.FC = () => {
                             borderColor: 'divider'
                         }}
                     >
-                        <Box sx={{ textAlign: 'center', mb: 6, maxWidth: 860, mx: 'auto' }}>
+                        <Box sx={{ textAlign: 'center', mb: { xs: 4, sm: 5, md: 6 }, maxWidth: 860, mx: 'auto' }}>
                             <Typography
                                 variant="h3"
                                 component="h1"
@@ -154,13 +154,15 @@ const DiscoveryView: React.FC = () => {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    gap: 2
+                                    gap: { xs: 1, sm: 2 },
+                                    fontSize: { xs: '1.75rem', sm: '2rem', md: '2.25rem' },
+                                    flexWrap: 'wrap'
                                 }}
                             >
-                                {searchMode === 0 && renderIcon(heroIconName, { sx: { fontSize: 40, color: primaryColor } })}
+                                {searchMode === 0 && renderIcon(heroIconName, { sx: { fontSize: { xs: 32, sm: 36, md: 40 }, color: primaryColor } })}
                                 {searchMode === 0 ? (viewConfig.labels?.modeAiTitle || "AI Product Search") : (viewConfig.labels?.modeNetworkTitle || "Network Discovery")}
                             </Typography>
-                            <Typography variant="body1" color="text.secondary" sx={{ fontFamily: fontFamily, maxWidth: 660, mx: 'auto' }}>
+                            <Typography variant="body1" color="text.secondary" sx={{ fontFamily: fontFamily, maxWidth: 660, mx: 'auto', fontSize: { xs: '0.9rem', sm: '1rem' }, px: { xs: 1, sm: 0 } }}>
                                 {searchMode === 0
                                     ? (viewConfig.labels?.modeAiSub || "Experience the power of AI.")
                                     : (viewConfig.labels?.modeNetworkSub || "Explore the ONDC network.")
@@ -174,16 +176,19 @@ const DiscoveryView: React.FC = () => {
                             sx={{
                                 display: 'inline-flex',
                                 p: '4px',
-                                mb: 5,
+                                mb: { xs: 3, sm: 4, md: 5 },
                                 borderRadius: `${config.theme.shape.searchBarRadius}px`,
-                                bgcolor: config.theme.palette.background.default, // Contrast against main white paper
+                                bgcolor: config.theme.palette.background.default,
                                 mx: 'auto',
                                 position: 'relative',
                                 left: '50%',
                                 transform: 'translateX(-50%)',
                                 border: '1px solid',
                                 borderColor: 'divider',
-                                boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.05)'
+                                boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.05)',
+                                flexDirection: { xs: 'column', sm: 'row' },
+                                width: { xs: '100%', sm: 'auto' },
+                                maxWidth: { xs: '100%', sm: 'none' }
                             }}
                         >
                             {[
@@ -197,17 +202,19 @@ const DiscoveryView: React.FC = () => {
                                     size="small"
                                     sx={{
                                         borderRadius: `${config.theme.shape.buttonRadius}px`,
-                                        px: 2.5,
+                                        px: { xs: 2, sm: 2.5 },
                                         py: 0.6,
                                         minHeight: 32,
                                         textTransform: 'none',
                                         fontWeight: 600,
-                                        fontSize: '0.85rem',
+                                        fontSize: { xs: '0.8rem', sm: '0.85rem' },
                                         fontFamily: fontFamily,
                                         color: searchMode === tab.value ? config.theme.palette.primary.contrastText : 'text.secondary',
                                         background: searchMode === tab.value ? primaryColor : 'transparent',
                                         boxShadow: searchMode === tab.value ? config.theme.shadows.soft : 'none',
                                         transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        width: { xs: '100%', sm: 'auto' },
+                                        mb: { xs: tab.value === 0 ? 0.5 : 0, sm: 0 },
                                         '&:hover': {
                                             color: searchMode === tab.value ? config.theme.palette.primary.contrastText : primaryColor,
                                             background: searchMode === tab.value ? primaryColor : config.theme.palette.background.paper
@@ -221,27 +228,34 @@ const DiscoveryView: React.FC = () => {
 
                         {/* MODE A: AI TEXT SEARCH */}
                         {searchMode === 0 && (
-                            <Box sx={{ maxWidth: 860, mx: 'auto', position: 'relative', zIndex: 10 }}>
+                            <Box sx={{ maxWidth: { xs: '100%', sm: 900 }, mx: 'auto', position: 'relative', zIndex: 10, px: { xs: 0, sm: 2 } }}>
                                 <Paper
                                     elevation={0}
                                     sx={{
-                                        p: '4px',
+                                        p: { xs: '4px', sm: '6px' },
                                         display: 'flex',
                                         alignItems: 'center',
                                         borderRadius: `${config.theme.shape.searchBarRadius}px`,
-                                        bgcolor: config.theme.palette.background.default, // Subtle contrast
+                                        bgcolor: '#ffffff',
                                         border: '1px solid',
-                                        borderColor: 'divider',
-                                        boxShadow: config.theme.shadows.medium,
-                                        transition: 'all 0.3s ease',
-                                        '&:hover, &:focus-within': {
-                                            boxShadow: config.theme.shadows.hard,
-                                            transform: 'scale(1.01)'
+                                        borderColor: alpha(primaryColor, 0.12),
+                                        boxShadow: `0 2px 12px ${alpha(primaryColor, 0.08)}`,
+                                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        flexDirection: { xs: 'column', sm: 'row' },
+                                        gap: { xs: 1, sm: 0 },
+                                        '&:hover': {
+                                            borderColor: alpha(primaryColor, 0.3),
+                                            boxShadow: `0 4px 20px ${alpha(primaryColor, 0.15)}, 0 0 0 4px ${alpha(primaryColor, 0.05)}`
+                                        },
+                                        '&:focus-within': {
+                                            borderColor: primaryColor,
+                                            boxShadow: `0 4px 24px ${alpha(primaryColor, 0.2)}, 0 0 0 4px ${alpha(primaryColor, 0.08)}`,
+                                            transform: { xs: 'none', sm: 'translateY(-2px)' }
                                         }
                                     }}
                                 >
-                                    <Box sx={{ pl: 2.5, pr: 1, display: 'flex', color: primaryColor }}>
-                                        {renderIcon(heroIconName, { sx: { fontSize: 22 } })}
+                                    <Box sx={{ pl: { xs: 2, sm: 3 }, pr: { xs: 1, sm: 2 }, display: 'flex', alignItems: 'center', color: alpha(primaryColor, 0.7), width: { xs: '100%', sm: 'auto' }, justifyContent: { xs: 'center', sm: 'flex-start' } }}>
+                                        {renderIcon('Search', { sx: { fontSize: { xs: 20, sm: 24 } } })}
                                     </Box>
                                     <InputBase
                                         fullWidth
@@ -251,32 +265,40 @@ const DiscoveryView: React.FC = () => {
                                         onChange={(e) => setSearchText(e.target.value)}
                                         onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                                         sx={{
-                                            pl: 0.5,
                                             fontFamily: fontFamily,
-                                            fontSize: '1rem',
-                                            fontWeight: 500,
-                                            color: config.theme.palette.text.primary
+                                            fontSize: { xs: '0.95rem', sm: '1.05rem' },
+                                            fontWeight: 400,
+                                            color: config.theme.palette.text.primary,
+                                            py: { xs: 1, sm: 0.5 },
+                                            px: { xs: 2, sm: 0 },
+                                            width: { xs: '100%', sm: 'auto' },
+                                            '& input::placeholder': {
+                                                color: config.theme.palette.text.secondary,
+                                                opacity: 0.6
+                                            }
                                         }}
                                     />
                                     <Button
                                         variant="contained"
                                         onClick={handleSearch}
                                         sx={{
-                                            minWidth: '46px',
-                                            height: '46px',
+                                            minWidth: { xs: '100%', sm: '52px' },
+                                            height: { xs: '48px', sm: '52px' },
                                             borderRadius: `${config.theme.shape.buttonRadius}px`,
                                             p: 0,
-                                            ml: 1,
+                                            mr: { xs: 0, sm: 0.5 },
+                                            border: 'none',
                                             color: config.theme.palette.primary.contrastText,
                                             background: config.theme.gradients.primary,
                                             boxShadow: config.theme.shadows.colored,
                                             '&:hover': {
                                                 background: primaryColor,
-                                                transform: 'scale(1.05)'
+                                                transform: { xs: 'none', sm: 'scale(1.05)' },
+                                                boxShadow: config.theme.shadows.hard
                                             }
                                         }}
                                     >
-                                        {isLoading ? <CircularProgress size={22} color="inherit" /> : renderIcon(heroIconName, { sx: { fontSize: 24 } })}
+                                        {isLoading ? <CircularProgress size={24} color="inherit" /> : renderIcon('Search', { sx: { fontSize: { xs: 24, sm: 26 } } })}
                                     </Button>
                                 </Paper>
                             </Box>

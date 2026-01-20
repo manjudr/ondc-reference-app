@@ -258,7 +258,7 @@
             "shape": {
                 "borderRadius": 12,
                 "searchBarRadius": 50,
-                "buttonRadius": 10
+                "buttonRadius": 20
             },
             "gradients": {
                 "primary": "linear-gradient(135deg, #2563eb 0%, #06b6d4 100%)",
