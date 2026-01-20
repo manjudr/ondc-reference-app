@@ -42,7 +42,7 @@ export default function App() {
   return (
     <Routes>
       {/* Root Redirect */}
-      <Route path="/" element={<Navigate to={config?.endpoint || '/retail'} replace />} />
+      <Route path="/" element={<Navigate to={(config?.endpoint || '').replace(/^\//, '')} replace />} />
 
       {/* Tenant Routes */}
       <Route path="/:endpoint" element={<TenantRoute />}>
