@@ -39,6 +39,7 @@ export interface ClientConfig {
             color: string;
             activeColor: string;
             sectionTitle?: string;
+            footer?: string;
             items: SidebarItem[];
         };
     };

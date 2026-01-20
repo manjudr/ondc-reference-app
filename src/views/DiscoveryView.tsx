@@ -21,6 +21,286 @@ import * as Icons from '@mui/icons-material';
 import { useConfig } from '../config/ConfigProvider';
 import type { DiscoveryViewConfig } from '../config/types';
 
+// Extracted ResultCard component for better organization
+const ResultCard: React.FC<{
+    item: any;
+    config: any;
+    viewConfig: DiscoveryViewConfig;
+}> = ({ item, config, viewConfig }) => {
+    const primaryColor = config.theme.palette.primary.main;
+    const fontFamily = config.theme.typography.fontFamily;
+
+    return (
+        <Card
+            elevation={0}
+            sx={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                borderRadius: `${config.theme.shape.borderRadius}px`,
+                overflow: 'hidden',
+                border: '1px solid',
+                borderColor: alpha(primaryColor, 0.08),
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                bgcolor: config.theme.palette.background.paper,
+                position: 'relative',
+                '&:hover': {
+                    transform: 'translateY(-12px)',
+                    boxShadow: `0 20px 40px ${alpha(primaryColor, 0.15)}, 0 0 0 1px ${alpha(primaryColor, 0.1)}`,
+                    borderColor: alpha(primaryColor, 0.2),
+                    '& .card-image-overlay': {
+                        opacity: 0.15
+                    },
+                    '& .card-action-button': {
+                        transform: 'translateX(0)',
+                        opacity: 1
+                    }
+                }
+            }}
+        >
+            {/* Image Section with Overlay */}
+            <Box
+                sx={{
+                    position: 'relative',
+                    pt: '66.67%', // 3:2 aspect ratio
+                    overflow: 'hidden',
+                    bgcolor: alpha(primaryColor, 0.03)
+                }}
+            >
+                {/* Gradient Overlay */}
+                <Box
+                    className="card-image-overlay"
+                    sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: `linear-gradient(180deg, transparent 0%, ${alpha(primaryColor, 0)} 50%, ${alpha(primaryColor, 0.05)} 100%)`,
+                        opacity: 0,
+                        transition: 'opacity 0.4s ease',
+                        zIndex: 1
+                    }}
+                />
+
+                <CardMedia
+                    image={item.image}
+                    sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
+                    }}
+                />
+
+                {/* Category Badge */}
+                <Chip
+                    label={item.category}
+                    size="small"
+                    sx={{
+                        position: 'absolute',
+                        top: 16,
+                        left: 16,
+                        bgcolor: 'rgba(255, 255, 255, 0.95)',
+                        backdropFilter: 'blur(8px)',
+                        color: primaryColor,
+                        fontWeight: 700,
+                        fontSize: '0.7rem',
+                        height: 24,
+                        border: `1px solid ${alpha(primaryColor, 0.15)}`,
+                        boxShadow: `0 4px 12px ${alpha(primaryColor, 0.1)}`,
+                        zIndex: 2,
+                        letterSpacing: '0.03em',
+                        fontFamily: fontFamily
+                    }}
+                />
+
+                {/* Rating Badge */}
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: 16,
+                        right: 16,
+                        bgcolor: 'rgba(0, 0, 0, 0.75)',
+                        backdropFilter: 'blur(8px)',
+                        color: '#ffffff',
+                        borderRadius: `${config.theme.shape.buttonRadius}px`,
+                        px: 1.5,
+                        py: 0.75,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 0.5,
+                        zIndex: 2,
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)'
+                    }}
+                >
+                    <Rating
+                        value={1}
+                        max={1}
+                        size="small"
+                        readOnly
+                        sx={{
+                            color: '#FFD700',
+                            fontSize: '1rem'
+                        }}
+                    />
+                    <Typography
+                        variant="caption"
+                        fontWeight={700}
+                        sx={{
+                            fontFamily: fontFamily,
+                            fontSize: '0.8rem'
+                        }}
+                    >
+                        {item.rating}
+                    </Typography>
+                </Box>
+            </Box>
+
+            {/* Content Section */}
+            <CardContent
+                sx={{
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    p: 3,
+                    gap: 2
+                }}
+            >
+                {/* Product Name */}
+                <Typography
+                    variant="h6"
+                    fontWeight={700}
+                    sx={{
+                        fontFamily: fontFamily,
+                        fontSize: '1.1rem',
+                        lineHeight: 1.4,
+                        color: config.theme.palette.text.primary,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        minHeight: '2.8em',
+                        mb: 0.5
+                    }}
+                >
+                    {item.name}
+                </Typography>
+
+                {/* Description */}
+                <Typography
+                    variant="body2"
+                    sx={{
+                        fontFamily: fontFamily,
+                        fontSize: '0.875rem',
+                        lineHeight: 1.6,
+                        color: config.theme.palette.text.secondary,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        minHeight: '2.8em',
+                        mb: 1
+                    }}
+                >
+                    {item.description}
+                </Typography>
+
+                {/* Divider */}
+                <Box
+                    sx={{
+                        height: '1px',
+                        bgcolor: alpha(primaryColor, 0.08),
+                        my: 0.5
+                    }}
+                />
+
+                {/* Price and Action Row */}
+                <Box
+                    sx={{
+                        mt: 'auto',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: 2
+                    }}
+                >
+                    {/* Price Section */}
+                    <Box sx={{ flex: 1 }}>
+                        <Typography
+                            variant="caption"
+                            display="block"
+                            sx={{
+                                color: config.theme.palette.text.secondary,
+                                fontWeight: 600,
+                                fontSize: '0.7rem',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                                mb: 0.5,
+                                fontFamily: fontFamily
+                            }}
+                        >
+                            {viewConfig.labels?.priceLabel || "Price"}
+                        </Typography>
+                        <Typography
+                            variant="h5"
+                            fontWeight={800}
+                            sx={{
+                                color: primaryColor,
+                                fontFamily: fontFamily,
+                                fontSize: '1.5rem',
+                                letterSpacing: '-0.02em',
+                                lineHeight: 1
+                            }}
+                        >
+                            {item.price}
+                        </Typography>
+                    </Box>
+
+                    {/* Action Button */}
+                    <Button
+                        variant="contained"
+                        size="medium"
+                        className="card-action-button"
+                        sx={{
+                            borderRadius: `${config.theme.shape.buttonRadius}px`,
+                            background: config.theme.gradients.primary,
+                            color: config.theme.palette.primary.contrastText,
+                            fontWeight: 700,
+                            fontSize: '0.85rem',
+                            px: 3,
+                            py: 1,
+                            textTransform: 'none',
+                            fontFamily: fontFamily,
+                            boxShadow: config.theme.shadows.colored,
+                            transform: 'translateX(4px)',
+                            opacity: 0.9,
+                            border: 'none',
+                            outline: 'none',
+                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                            '&:hover': {
+                                filter: 'brightness(1.1)',
+                                boxShadow: config.theme.shadows.hard,
+                                transform: 'translateX(0) scale(1.05)'
+                            },
+                            '&:focus': {
+                                outline: 'none'
+                            }
+                        }}
+                    >
+                        {viewConfig.labels?.viewButton || "View"}
+                    </Button>
+                </Box>
+            </CardContent>
+        </Card>
+    );
+};
+
 const DiscoveryView: React.FC = () => {
     const { config } = useConfig();
     const [searchText, setSearchText] = useState('');
@@ -212,12 +492,17 @@ const DiscoveryView: React.FC = () => {
                                         color: searchMode === tab.value ? config.theme.palette.primary.contrastText : 'text.secondary',
                                         background: searchMode === tab.value ? primaryColor : 'transparent',
                                         boxShadow: searchMode === tab.value ? config.theme.shadows.soft : 'none',
+                                        border: 'none',
+                                        outline: 'none',
                                         transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                                         width: { xs: '100%', sm: 'auto' },
                                         mb: { xs: tab.value === 0 ? 0.5 : 0, sm: 0 },
                                         '&:hover': {
                                             color: searchMode === tab.value ? config.theme.palette.primary.contrastText : primaryColor,
                                             background: searchMode === tab.value ? primaryColor : config.theme.palette.background.paper
+                                        },
+                                        '&:focus': {
+                                            outline: 'none'
                                         }
                                     }}
                                 >
@@ -288,13 +573,17 @@ const DiscoveryView: React.FC = () => {
                                             p: 0,
                                             mr: { xs: 0, sm: 0.5 },
                                             border: 'none',
+                                            outline: 'none',
                                             color: config.theme.palette.primary.contrastText,
                                             background: config.theme.gradients.primary,
                                             boxShadow: config.theme.shadows.colored,
                                             '&:hover': {
-                                                background: primaryColor,
+                                                filter: 'brightness(1.1)',
                                                 transform: { xs: 'none', sm: 'scale(1.05)' },
                                                 boxShadow: config.theme.shadows.hard
+                                            },
+                                            '&:focus': {
+                                                outline: 'none'
                                             }
                                         }}
                                     >
@@ -464,10 +753,15 @@ const DiscoveryView: React.FC = () => {
                                                 letterSpacing: '0.02em',
                                                 background: config.theme.gradients.primary,
                                                 boxShadow: config.theme.shadows.colored,
+                                                border: 'none',
+                                                outline: 'none',
                                                 '&:hover': {
-                                                    background: primaryColor,
+                                                    filter: 'brightness(1.1)',
                                                     boxShadow: config.theme.shadows.hard,
                                                     transform: 'translateY(-1px)'
+                                                },
+                                                '&:focus': {
+                                                    outline: 'none'
                                                 },
                                                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                                             }}
@@ -529,144 +823,7 @@ const DiscoveryView: React.FC = () => {
                                     <Grid container spacing={4} alignItems="stretch">
                                         {results.map(item => (
                                             <Grid size={{ xs: 12, sm: 6, md: 4 }} key={item.id} sx={{ display: 'flex' }}>
-                                                <Card
-                                                    elevation={0}
-                                                    sx={{
-                                                        width: '100%',
-                                                        display: 'flex',
-                                                        flexDirection: 'column',
-                                                        borderRadius: `${config.theme.shape.borderRadius}px`,
-                                                        overflow: 'visible', // For floating elements
-                                                        boxShadow: config.theme.shadows.soft,
-                                                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                                                        bgcolor: config.theme.palette.background.paper,
-                                                        position: 'relative',
-                                                        '&:hover': {
-                                                            transform: 'translateY(-8px)',
-                                                            boxShadow: config.theme.shadows.medium,
-                                                            '& .card-image': {
-                                                                transform: 'scale(1.1)'
-                                                            }
-                                                        }
-                                                    }}
-                                                >
-                                                    <Box sx={{ position: 'relative', pt: '75%', overflow: 'hidden', borderRadius: `${config.theme.shape.borderRadius}px ${config.theme.shape.borderRadius}px 0 0`, bgcolor: alpha(primaryColor, 0.1) }}>
-                                                        <CardMedia
-                                                            image={item.image}
-                                                            className="card-image"
-                                                            sx={{
-                                                                position: 'absolute',
-                                                                top: 0,
-                                                                left: 0,
-                                                                width: '100%',
-                                                                height: '100%',
-                                                                backgroundSize: 'cover',
-                                                                backgroundPosition: 'center',
-                                                                transition: 'transform 0.5s ease'
-                                                            }}
-                                                        />
-                                                        {/* Floating Badges */}
-                                                        <Box
-                                                            sx={{
-                                                                position: 'absolute',
-                                                                top: 12,
-                                                                left: 12,
-                                                                display: 'flex',
-                                                                gap: 1
-                                                            }}
-                                                        >
-                                                            <Chip
-                                                                label={item.category}
-                                                                size="small"
-                                                                sx={{
-                                                                    bgcolor: alpha(config.theme.palette.background.paper, 0.95),
-                                                                    backdropFilter: 'blur(4px)',
-                                                                    color: primaryColor,
-                                                                    fontWeight: 700,
-                                                                    fontSize: '0.7rem',
-                                                                    boxShadow: config.theme.shadows.soft
-                                                                }}
-                                                            />
-                                                        </Box>
-                                                        <Box
-                                                            sx={{
-                                                                position: 'absolute',
-                                                                bottom: 12,
-                                                                right: 12,
-                                                                bgcolor: 'rgba(0, 0, 0, 0.7)',
-                                                                backdropFilter: 'blur(4px)',
-                                                                color: config.theme.palette.primary.contrastText,
-                                                                borderRadius: `${config.theme.shape.buttonRadius}px`,
-                                                                px: 1,
-                                                                py: 0.5,
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                gap: 0.5
-                                                            }}
-                                                        >
-                                                            <Rating value={1} max={1} size="small" readOnly sx={{ color: '#FFD700', fontSize: '1rem' }} />
-                                                            <Typography variant="caption" fontWeight={700}>
-                                                                {item.rating}
-                                                            </Typography>
-                                                        </Box>
-                                                    </Box>
-
-                                                    <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 3 }}>
-                                                        <Typography
-                                                            variant="h6"
-                                                            fontWeight={700}
-                                                            sx={{
-                                                                mb: 1,
-                                                                fontFamily: fontFamily,
-                                                                lineHeight: 1.3,
-                                                                overflow: 'hidden',
-                                                                textOverflow: 'ellipsis',
-                                                                display: '-webkit-box',
-                                                                WebkitLineClamp: 2,
-                                                                WebkitBoxOrient: 'vertical',
-                                                                minHeight: '2.6em' // Guarantee height for 2 lines
-                                                            }}
-                                                        >
-                                                            {item.name}
-                                                        </Typography>
-
-                                                        <Box sx={{ mt: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                                            <Box>
-                                                                <Typography variant="caption" display="block" color="text.secondary">
-                                                                    {viewConfig.labels?.priceLabel || "Price"}
-                                                                </Typography>
-                                                                <Typography
-                                                                    variant="h5"
-                                                                    fontWeight={800}
-                                                                    sx={{
-                                                                        color: primaryColor,
-                                                                        fontFamily: fontFamily,
-                                                                        letterSpacing: '-0.5px'
-                                                                    }}
-                                                                >
-                                                                    {item.price}
-                                                                </Typography>
-                                                            </Box>
-                                                            <Button
-                                                                variant="outlined"
-                                                                size="small"
-                                                                sx={{
-                                                                    borderRadius: `${config.theme.shape.buttonRadius}px`,
-                                                                    borderColor: alpha(primaryColor, 0.3),
-                                                                    color: primaryColor,
-                                                                    minWidth: 'auto',
-                                                                    px: 2,
-                                                                    '&:hover': {
-                                                                        borderColor: primaryColor,
-                                                                        bgcolor: alpha(primaryColor, 0.05)
-                                                                    }
-                                                                }}
-                                                            >
-                                                                {viewConfig.labels?.viewButton || "View"}
-                                                            </Button>
-                                                        </Box>
-                                                    </CardContent>
-                                                </Card>
+                                                <ResultCard item={item} config={config} viewConfig={viewConfig} />
                                             </Grid>
                                         ))}
                                     </Grid>

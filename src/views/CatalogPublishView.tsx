@@ -10,7 +10,6 @@ import {
     LinearProgress,
     Fade,
     IconButton,
-    useTheme,
     alpha
 } from '@mui/material';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
@@ -77,8 +76,8 @@ const CatalogPublishView: React.FC = () => {
         setDragActive(false);
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
             const droppedFile = e.dataTransfer.files[0];
-            // Simple validation for json/csv if needed, currently accepting all matching input accept
-            if (droppedFile.name.endsWith('.json') || droppedFile.name.endsWith('.csv')) {
+            // Simple validation for json if needed
+            if (droppedFile.name.endsWith('.json')) {
                 setFile(droppedFile);
                 setSuccess(false);
             }
@@ -189,7 +188,7 @@ const CatalogPublishView: React.FC = () => {
                                 >
                                     <input
                                         ref={inputRef}
-                                        accept=".json,.csv"
+                                        accept=".json"
                                         style={{ display: 'none' }}
                                         id="upload-file-input"
                                         type="file"
@@ -238,7 +237,7 @@ const CatalogPublishView: React.FC = () => {
                                             </Button>
                                         </Box>
                                         <Typography variant="caption" sx={{ color: 'text.disabled', fontFamily: fontFamily, pt: 2, display: 'block' }}>
-                                            {viewConfig.labels?.formatsText || "Supports JSON and CSV formats"}
+                                            {viewConfig.labels?.formatsText || "Supports JSON format"}
                                         </Typography>
                                     </Stack>
                                 </Box>

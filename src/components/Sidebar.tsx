@@ -11,7 +11,8 @@ import {
   useTheme,
   useMediaQuery,
   alpha,
-  Typography
+  Typography,
+  Avatar
 } from '@mui/material';
 import { useConfig } from '../config/ConfigProvider';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -50,7 +51,26 @@ const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, desktopOpen, onMobileClos
       {/* Mobile Header in Drawer */}
       {isMobile && (
         <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
-          <img src={config.app.logo} alt="Logo" style={{ height: 32 }} />
+          {config.app.logo ? (
+            <Avatar src={config.app.logo} alt={config.app.title || "Logo"} variant="rounded" sx={{ width: 32, height: 32 }}>
+              {config.app.title ? config.app.title.charAt(0).toUpperCase() : 'B'}
+            </Avatar>
+          ) : (
+            <Avatar
+              variant="rounded"
+              sx={{
+                width: 32,
+                height: 32,
+                bgcolor: primaryColor,
+                color: config.theme.palette.primary.contrastText,
+                fontWeight: 700,
+                fontSize: '1rem',
+                fontFamily: fontFamily
+              }}
+            >
+              {config.app.title ? config.app.title.charAt(0).toUpperCase() : 'B'}
+            </Avatar>
+          )}
           <Typography variant="h6" sx={{ fontFamily: fontFamily, fontWeight: 700 }}>
             {config.app.title}
           </Typography>
@@ -95,6 +115,11 @@ const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, desktopOpen, onMobileClos
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                     position: 'relative',
                     overflow: 'hidden',
+                    outline: 'none',
+                    border: 'none',
+                    '&:focus': {
+                      outline: 'none'
+                    },
                     '&.Mui-selected': {
                       bgcolor: alpha(primaryColor, 0.1),
                       color: primaryColor,
@@ -157,7 +182,7 @@ const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, desktopOpen, onMobileClos
       {/* Footer / Version info could go here */}
       <Box sx={{ mt: 'auto', p: 3, opacity: 0.5 }}>
         <Typography variant="caption" display="block" align="center" sx={{ fontFamily: fontFamily }}>
-          ONDC Network
+          {sidebar.footer || config.network.domain || 'Beckn Network'}
         </Typography>
       </Box>
     </Box>
