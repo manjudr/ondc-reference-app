@@ -66,6 +66,12 @@
                 "upload": "CloudUpload",
                 "publish": "Storefront",
                 "success": "CheckCircle"
+            },
+            "discovery": {
+                "locationBgOpacity": 0.08,
+                "radiusBgOpacity": 0.10,
+                "jsonpathBgOpacity": 0.12,
+                "borderOpacity": 0.20
             }
         },
         "layout": {
@@ -279,6 +285,12 @@
                 "upload": "CloudUpload",
                 "publish": "ElectricBolt",
                 "success": "CheckCircle"
+            },
+            "discovery": {
+                "locationBgOpacity": 0.08,
+                "radiusBgOpacity": 0.10,
+                "jsonpathBgOpacity": 0.12,
+                "borderOpacity": 0.20
             }
         },
         "layout": {
@@ -478,6 +490,12 @@
                 "upload": "CloudUpload",
                 "publish": "HealthAndSafety",
                 "success": "CheckCircle"
+            },
+            "discovery": {
+                "locationBgOpacity": 0.08,
+                "radiusBgOpacity": 0.10,
+                "jsonpathBgOpacity": 0.12,
+                "borderOpacity": 0.20
             }
         },
         "layout": {

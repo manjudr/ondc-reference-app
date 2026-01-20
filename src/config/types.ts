@@ -25,6 +25,12 @@ export interface ClientConfig {
         gradients: { primary: string; heroText: string; surface: string; };
         shadows: { soft: string; medium: string; hard: string; colored: string; };
         icons: { [key: string]: string; };
+        discovery?: {
+            locationBgOpacity?: number;
+            radiusBgOpacity?: number;
+            jsonpathBgOpacity?: number;
+            borderOpacity?: number;
+        };
     };
     layout: {
         header: {

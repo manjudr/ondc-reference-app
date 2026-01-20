@@ -455,20 +455,21 @@ const DiscoveryView: React.FC = () => {
                             elevation={0}
                             sx={{
                                 display: 'inline-flex',
-                                p: '4px',
+                                p: { xs: '6px', sm: '4px' },
                                 mb: { xs: 3, sm: 4, md: 5 },
-                                borderRadius: `${config.theme.shape.searchBarRadius}px`,
+                                borderRadius: { xs: `${config.theme.shape.buttonRadius + 8}px`, sm: `${config.theme.shape.searchBarRadius}px` },
                                 bgcolor: config.theme.palette.background.default,
                                 mx: 'auto',
                                 position: 'relative',
-                                left: '50%',
-                                transform: 'translateX(-50%)',
+                                left: { xs: 0, sm: '50%' },
+                                transform: { xs: 'none', sm: 'translateX(-50%)' },
                                 border: '1px solid',
                                 borderColor: 'divider',
                                 boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.05)',
                                 flexDirection: { xs: 'column', sm: 'row' },
-                                width: { xs: '100%', sm: 'auto' },
-                                maxWidth: { xs: '100%', sm: 'none' }
+                                width: { xs: 'calc(100% - 32px)', sm: 'auto' },
+                                maxWidth: { xs: 'calc(100% - 32px)', sm: 'none' },
+                                gap: { xs: '4px', sm: 0 }
                             }}
                         >
                             {[
@@ -496,7 +497,6 @@ const DiscoveryView: React.FC = () => {
                                         outline: 'none',
                                         transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                                         width: { xs: '100%', sm: 'auto' },
-                                        mb: { xs: tab.value === 0 ? 0.5 : 0, sm: 0 },
                                         '&:hover': {
                                             color: searchMode === tab.value ? config.theme.palette.primary.contrastText : primaryColor,
                                             background: searchMode === tab.value ? primaryColor : config.theme.palette.background.paper
@@ -609,10 +609,28 @@ const DiscoveryView: React.FC = () => {
                                     {/* Row 1: Location & Radius */}
                                     <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}>
                                         {/* Location */}
-                                        <Box sx={{ flex: 1, p: 2.5, display: 'flex', alignItems: 'center' }}>
+                                        <Box sx={{
+                                            flex: 1,
+                                            p: 2.5,
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            bgcolor: 'transparent',
+                                            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)',
+                                            borderRadius: 2,
+                                            m: 1,
+                                            border: '1px solid',
+                                            borderColor: 'divider',
+                                            transition: 'all 0.3s ease',
+                                            cursor: 'text',
+                                            '&:hover': {
+                                                borderColor: primaryColor,
+                                                boxShadow: `inset 0 3px 6px rgba(0,0,0,0.06), 0 0 0 1px ${alpha(primaryColor, 0.1)}`,
+                                                bgcolor: alpha(primaryColor, 0.02)
+                                            }
+                                        }}>
                                             {renderIcon('LocationOn', { sx: { color: primaryColor, fontSize: 24, mr: 2 } })}
                                             <Box sx={{ flex: 1 }}>
-                                                <Typography variant="caption" fontWeight={700} sx={{ color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', mb: 0.5 }}>
+                                                <Typography variant="caption" fontWeight={700} sx={{ color: primaryColor, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', mb: 0.5 }}>
                                                     {viewConfig.labels?.locationLabel || "Target Location"}
                                                 </Typography>
                                                 <InputBase
@@ -635,9 +653,25 @@ const DiscoveryView: React.FC = () => {
                                         <Box sx={{ height: '1px', bgcolor: 'divider', display: { xs: 'block', md: 'none' } }} />
 
                                         {/* Radius */}
-                                        <Box sx={{ width: { xs: '100%', md: '35%' }, p: 2.5, bgcolor: config.theme.palette.background.default }}>
+                                        <Box sx={{
+                                            width: { xs: '100%', md: '35%' },
+                                            p: 2.5,
+                                            bgcolor: 'transparent',
+                                            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)',
+                                            borderRadius: 2,
+                                            m: 1,
+                                            border: '1px solid',
+                                            borderColor: 'divider',
+                                            transition: 'all 0.3s ease',
+                                            cursor: 'pointer',
+                                            '&:hover': {
+                                                borderColor: primaryColor,
+                                                boxShadow: `inset 0 3px 6px rgba(0,0,0,0.06), 0 0 0 1px ${alpha(primaryColor, 0.1)}`,
+                                                bgcolor: alpha(primaryColor, 0.02)
+                                            }
+                                        }}>
                                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
-                                                <Typography variant="caption" fontWeight={700} sx={{ color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                                <Typography variant="caption" fontWeight={700} sx={{ color: primaryColor, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                                                     {viewConfig.labels?.radiusLabel || "Search Radius"}
                                                 </Typography>
                                                 <Typography variant="caption" fontWeight={700} sx={{ color: primaryColor }}>
@@ -674,11 +708,26 @@ const DiscoveryView: React.FC = () => {
 
                                     {/* Row 2: Advanced Filter */}
                                     {jsonpathFilter && (
-                                        <Box sx={{ p: 2.5, bgcolor: alpha(primaryColor, 0.01) }}>
+                                        <Box sx={{
+                                            p: 2.5,
+                                            bgcolor: 'transparent',
+                                            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)',
+                                            borderRadius: 2,
+                                            m: 1,
+                                            border: '1px solid',
+                                            borderColor: 'divider',
+                                            transition: 'all 0.3s ease',
+                                            cursor: 'text',
+                                            '&:hover': {
+                                                borderColor: primaryColor,
+                                                boxShadow: `inset 0 3px 6px rgba(0,0,0,0.06), 0 0 0 1px ${alpha(primaryColor, 0.1)}`,
+                                                bgcolor: alpha(primaryColor, 0.02)
+                                            }
+                                        }}>
                                             <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
                                                 {renderIcon('Code', { sx: { fontSize: 20, color: 'text.secondary', mr: 2, transform: 'translateY(4px)' } })}
                                                 <Box sx={{ flex: 1 }}>
-                                                    <Typography variant="caption" fontWeight={700} sx={{ color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', mb: 0.5 }}>
+                                                    <Typography variant="caption" fontWeight={700} sx={{ color: primaryColor, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', mb: 0.5 }}>
                                                         {viewConfig.labels?.advancedQueryLabel || "Advanced Query (JSONPath)"}
                                                     </Typography>
                                                     <InputBase
