@@ -235,14 +235,13 @@ const DiscoveryView: React.FC = () => {
                                         p: { xs: '4px', sm: '6px' },
                                         display: 'flex',
                                         alignItems: 'center',
+                                        flexWrap: 'wrap',
                                         borderRadius: `${config.theme.shape.searchBarRadius}px`,
                                         bgcolor: '#ffffff',
                                         border: '1px solid',
                                         borderColor: alpha(primaryColor, 0.12),
                                         boxShadow: `0 2px 12px ${alpha(primaryColor, 0.08)}`,
                                         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                                        flexDirection: { xs: 'column', sm: 'row' },
-                                        gap: { xs: 1, sm: 0 },
                                         '&:hover': {
                                             borderColor: alpha(primaryColor, 0.3),
                                             boxShadow: `0 4px 20px ${alpha(primaryColor, 0.15)}, 0 0 0 4px ${alpha(primaryColor, 0.05)}`
@@ -254,7 +253,7 @@ const DiscoveryView: React.FC = () => {
                                         }
                                     }}
                                 >
-                                    <Box sx={{ pl: { xs: 2, sm: 3 }, pr: { xs: 1, sm: 2 }, display: 'flex', alignItems: 'center', color: alpha(primaryColor, 0.7), width: { xs: '100%', sm: 'auto' }, justifyContent: { xs: 'center', sm: 'flex-start' } }}>
+                                    <Box sx={{ pl: { xs: 2, sm: 3 }, pr: { xs: 1, sm: 2 }, display: 'flex', alignItems: 'center', color: alpha(primaryColor, 0.7) }}>
                                         {renderIcon('Search', { sx: { fontSize: { xs: 20, sm: 24 } } })}
                                     </Box>
                                     <InputBase
@@ -269,9 +268,10 @@ const DiscoveryView: React.FC = () => {
                                             fontSize: { xs: '0.95rem', sm: '1.05rem' },
                                             fontWeight: 400,
                                             color: config.theme.palette.text.primary,
-                                            py: { xs: 1, sm: 0.5 },
-                                            px: { xs: 2, sm: 0 },
-                                            width: { xs: '100%', sm: 'auto' },
+                                            py: { xs: 0.5, sm: 0.5 },
+                                            px: { xs: 0.5, sm: 0 },
+                                            flex: 1,
+                                            minWidth: { xs: '150px', sm: 'auto' },
                                             '& input::placeholder': {
                                                 color: config.theme.palette.text.secondary,
                                                 opacity: 0.6
@@ -282,8 +282,8 @@ const DiscoveryView: React.FC = () => {
                                         variant="contained"
                                         onClick={handleSearch}
                                         sx={{
-                                            minWidth: { xs: '100%', sm: '52px' },
-                                            height: { xs: '48px', sm: '52px' },
+                                            minWidth: { xs: '48px', sm: '52px' },
+                                            height: { xs: '46px', sm: '52px' },
                                             borderRadius: `${config.theme.shape.buttonRadius}px`,
                                             p: 0,
                                             mr: { xs: 0, sm: 0.5 },
