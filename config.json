@@ -110,13 +110,13 @@
         "schemas": {
             "GroceryItem": {
                 "label": "Grocery",
-                "contextUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/draft/schema/GroceryItem/v1/context.jsonld#GroceryItem",
-                "rendererUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/ondc-schema/schema/GroceryItem/v1/renderer.json"
+                "contextUrl": "https://raw.githubusercontent.comhttps://34.93.141.21.sslip.io/beckn/protocol-specifications-new/refs/heads/draft/schema/GroceryItem/v1/context.jsonld#GroceryItem",
+                "rendererUrl": "https://raw.githubusercontent.comhttps://34.93.141.21.sslip.io/beckn/protocol-specifications-new/ondc-schema/schema/GroceryItem/v1/renderer.json"
             },
             "FoodAndBeverageItem": {
                 "label": "Food & Beverage",
-                "contextUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/draft/schema/FoodAndBeverageItem/v1/context.jsonld#FoodAndBeverageItem",
-                "rendererUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/ondc-schema/schema/FoodAndBeverageItem/v1/renderer.json"
+                "contextUrl": "https://raw.githubusercontent.comhttps://34.93.141.21.sslip.io/beckn/protocol-specifications-new/refs/heads/draft/schema/FoodAndBeverageItem/v1/context.jsonld#FoodAndBeverageItem",
+                "rendererUrl": "https://raw.githubusercontent.comhttps://34.93.141.21.sslip.io/beckn/protocol-specifications-new/ondc-schema/schema/FoodAndBeverageItem/v1/renderer.json"
             }
         },
         "views": {
@@ -124,7 +124,7 @@
                 "type": "search",
                 "title": "Discover Items",
                 "subtitle": "Search across the ONDC networks",
-                "api": "/beckn/discover",
+                "api": "https://34.93.141.21.sslip.io/beckn/discover",
                 "context": {
                     "action": "discover"
                 },
@@ -193,7 +193,7 @@
                 "type": "form",
                 "title": "Publish Catalog",
                 "subtitle": "Empower your business distribution. Upload your detailed product catalog to instantly reach buyers across the ONDC network.",
-                "api": "/beckn/v2/catalog/publish",
+                "api": "https://34.93.141.21.sslip.io/beckn/v2/catalog/publish",
                 "context": {
                     "action": "catalog_publish",
                     "ttl": "PT30S"
@@ -323,8 +323,8 @@
         "schemas": {
             "EVChargingStation": {
                 "label": "Charging Station",
-                "contextUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/draft/schema/EVChargingStation/v1/context.jsonld",
-                "rendererUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/ondc-schema/schema/EVChargingStation/v1/renderer.json"
+                "contextUrl": "https://raw.githubusercontent.comhttps://34.93.141.21.sslip.io/beckn/protocol-specifications-new/refs/heads/draft/schema/EVChargingStation/v1/context.jsonld",
+                "rendererUrl": "https://raw.githubusercontent.comhttps://34.93.141.21.sslip.io/beckn/protocol-specifications-new/ondc-schema/schema/EVChargingStation/v1/renderer.json"
             }
         },
         "views": {
@@ -332,7 +332,7 @@
                 "type": "search",
                 "title": "Find Charging Stations",
                 "subtitle": "Locate available chargers nearby",
-                "api": "/beckn/discover",
+                "api": "https://34.93.141.21.sslip.io/beckn/discover",
                 "context": {
                     "action": "discover"
                 },
@@ -392,7 +392,7 @@
                 "type": "form",
                 "title": "Publish Station",
                 "subtitle": "Seamlessly onboard your charging infrastructure. Upload station details to make them visible to EV drivers network-wide.",
-                "api": "/beckn/v2/catalog/publish",
+                "api": "https://34.93.141.21.sslip.io/beckn/v2/catalog/publish",
                 "context": {
                     "action": "catalog_publish",
                     "ttl": "PT30S"
@@ -522,13 +522,13 @@
         "schemas": {
             "TeleconsultationService": {
                 "label": "Teleconsultation",
-                "contextUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/draft/schema/TeleconsultationService/v1/context.jsonld",
-                "rendererUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/ondc-schema/schema/TeleconsultationService/v1/renderer.json"
+                "contextUrl": "https://raw.githubusercontent.comhttps://34.93.141.21.sslip.io/beckn/protocol-specifications-new/refs/heads/draft/schema/TeleconsultationService/v1/context.jsonld",
+                "rendererUrl": "https://raw.githubusercontent.comhttps://34.93.141.21.sslip.io/beckn/protocol-specifications-new/ondc-schema/schema/TeleconsultationService/v1/renderer.json"
             },
             "DiagnosticService": {
                 "label": "Diagnostics",
-                "contextUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/draft/schema/DiagnosticService/v1/context.jsonld",
-                "rendererUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/ondc-schema/schema/DiagnosticService/v1/renderer.json"
+                "contextUrl": "https://raw.githubusercontent.comhttps://34.93.141.21.sslip.io/beckn/protocol-specifications-new/refs/heads/draft/schema/DiagnosticService/v1/context.jsonld",
+                "rendererUrl": "https://raw.githubusercontent.comhttps://34.93.141.21.sslip.io/beckn/protocol-specifications-new/ondc-schema/schema/DiagnosticService/v1/renderer.json"
             }
         },
         "views": {
@@ -536,7 +536,7 @@
                 "type": "search",
                 "title": "Find Healthcare Services",
                 "subtitle": "Connect with doctors and diagnostic centers",
-                "api": "/beckn/discover",
+                "api": "https://34.93.141.21.sslip.io/beckn/discover",
                 "context": {
                     "action": "discover"
                 },
@@ -605,7 +605,7 @@
                 "type": "form",
                 "title": "Publish Healthcare Services",
                 "subtitle": "Expand your reach. Upload your healthcare services catalog to connect with patients across the network.",
-                "api": "/beckn/v2/catalog/publish",
+                "api": "https://34.93.141.21.sslip.io/beckn/v2/catalog/publish",
                 "context": {
                     "action": "catalog_publish",
                     "ttl": "PT30S"
