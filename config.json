@@ -1,0 +1,646 @@
+[
+    {
+        "$schema": "../src/config/config.schema.json",
+        "endpoint": "/retail",
+        "app": {
+            "title": "ONDC Merchant",
+            "logo": "/assets/logo.png",
+            "favicon": "/vite.svg"
+        },
+        "theme": {
+            "mode": "light",
+            "palette": {
+                "primary": {
+                    "main": "#008060",
+                    "light": "#3d9e85",
+                    "dark": "#004d3a",
+                    "contrastText": "#ffffff"
+                },
+                "background": {
+                    "default": "#f6f6f7",
+                    "paper": "#ffffff",
+                    "surface": "#ffffff"
+                },
+                "text": {
+                    "primary": "#1a1c1d",
+                    "secondary": "#5c5f62",
+                    "disabled": "#8c9196"
+                },
+                "action": {
+                    "active": "#008060",
+                    "hover": "rgba(0, 128, 96, 0.05)",
+                    "selected": "rgba(0, 128, 96, 0.08)"
+                }
+            },
+            "typography": {
+                "fontFamily": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                "h3": {
+                    "fontSize": "2.25rem",
+                    "fontWeight": 700
+                },
+                "h4": {
+                    "fontSize": "1.25rem",
+                    "fontWeight": 600
+                }
+            },
+            "shape": {
+                "borderRadius": 12,
+                "searchBarRadius": 40,
+                "buttonRadius": 20
+            },
+            "gradients": {
+                "primary": "linear-gradient(135deg, #008060 0%, #1d9d74 100%)",
+                "heroText": "linear-gradient(135deg, #004d3a 0%, #008060 100%)",
+                "surface": "linear-gradient(180deg, #ffffff 0%, #f9fafb 100%)"
+            },
+            "shadows": {
+                "soft": "0 4px 12px rgba(0, 128, 96, 0.04)",
+                "medium": "0 8px 24px rgba(0, 0, 0, 0.08)",
+                "hard": "0 16px 48px rgba(0, 0, 0, 0.12)",
+                "colored": "0 8px 20px -6px rgba(0, 128, 96, 0.3)"
+            },
+            "icons": {
+                "appLogo": "Storefront",
+                "heroSearch": "AutoAwesome",
+                "networkDiscovery": "Language",
+                "upload": "CloudUpload",
+                "publish": "Storefront",
+                "success": "CheckCircle"
+            },
+            "discovery": {
+                "locationBgOpacity": 0.08,
+                "radiusBgOpacity": 0.10,
+                "jsonpathBgOpacity": 0.12,
+                "borderOpacity": 0.20
+            }
+        },
+        "layout": {
+            "header": {
+                "title": "ONDC Retail Portal",
+                "subtitle": "Manage and Discover Products",
+                "logo": "/assets/logo.png",
+                "background": "#008060",
+                "color": "#ffffff"
+            },
+            "sidebar": {
+                "background": "#ffffff",
+                "color": "#484f56",
+                "activeColor": "#008060",
+                "sectionTitle": "Retail / Grocery",
+                "footer": "ONDC Retail Network",
+                "items": [
+                    {
+                        "id": "bap",
+                        "title": "Shopper App (BAP)",
+                        "description": "Search & Buy",
+                        "icon": "ShoppingBag",
+                        "routes": [
+                            "discovery"
+                        ]
+                    },
+                    {
+                        "id": "bpp",
+                        "title": "Seller App (BPP)",
+                        "description": "Manage Inventory",
+                        "icon": "Storefront",
+                        "routes": [
+                            "catalog-publish"
+                        ]
+                    }
+                ]
+            }
+        },
+        "network": {
+            "domain": "beckn.one:retail"
+        },
+        "schemas": {
+            "GroceryItem": {
+                "label": "Grocery",
+                "contextUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/draft/schema/GroceryItem/v1/context.jsonld#GroceryItem",
+                "rendererUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/ondc-schema/schema/GroceryItem/v1/renderer.json"
+            },
+            "FoodAndBeverageItem": {
+                "label": "Food & Beverage",
+                "contextUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/draft/schema/FoodAndBeverageItem/v1/context.jsonld#FoodAndBeverageItem",
+                "rendererUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/ondc-schema/schema/FoodAndBeverageItem/v1/renderer.json"
+            }
+        },
+        "views": {
+            "discovery": {
+                "type": "search",
+                "title": "Discover Items",
+                "subtitle": "Search across the ONDC networks",
+                "api": "/beckn/discover",
+                "context": {
+                    "action": "discover"
+                },
+                "ui": {
+                    "layout": "grid",
+                    "background": "linear-gradient(135deg, #faf5ff, #f3e8ff)"
+                },
+                "search": {
+                    "placeholder": "Enter search term...",
+                    "radius": 1000
+                },
+                "filters": [
+                    {
+                        "id": "category",
+                        "label": "Category",
+                        "type": "select",
+                        "uiType": "chips",
+                        "options": [
+                            {
+                                "label": "Grocery",
+                                "value": "grocery",
+                                "schema": "GroceryItem",
+                                "defaultSearch": {
+                                    "text": "organic rice basmati",
+                                    "location": "19.1529,72.935"
+                                }
+                            },
+                            {
+                                "label": "Food & Beverage",
+                                "value": "fnb",
+                                "schema": "FoodAndBeverageItem",
+                                "defaultSearch": {
+                                    "text": "veg pizza margherita",
+                                    "location": "28.5375,77.2408"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "id": "jsonpath",
+                        "label": "JSONPath Query",
+                        "type": "text",
+                        "options": []
+                    }
+                ],
+                "labels": {
+                    "modeAiTitle": "AI Product Search",
+                    "modeNetworkTitle": "Network Discovery",
+                    "modeAiSub": "Experience the power of AI. Simply describe what you're looking for, and we'll find the best matches across the network.",
+                    "modeNetworkSub": "Explore the ONDC network using advanced location filters and JSONPath expressions for developers and power users.",
+                    "tabAi": "AI Search",
+                    "tabNetwork": "Network Discovery",
+                    "searchPlaceholder": "Describe what you want (e.g. 'Organic spices from Kerala')...",
+                    "actionButton": "Start Network Discovery",
+                    "resultsCount": "Found {count} Matches",
+                    "emptyTitle": "Start by searching for items",
+                    "emptySub": "Use typical keywords like 'Grocery' or 'Coffee'",
+                    "locationLabel": "Target Location",
+                    "radiusLabel": "Search Radius",
+                    "advancedQueryLabel": "Advanced Query (JSONPath)",
+                    "priceLabel": "Price",
+                    "viewButton": "View"
+                }
+            },
+            "catalog-publish": {
+                "type": "form",
+                "title": "Publish Catalog",
+                "subtitle": "Empower your business distribution. Upload your detailed product catalog to instantly reach buyers across the ONDC network.",
+                "api": "/beckn/v2/catalog/publish",
+                "context": {
+                    "action": "catalog_publish",
+                    "ttl": "PT30S"
+                },
+                "labels": {
+                    "dropTitle": "Drag & Drop your catalog",
+                    "dropSub": "or file browser will open automatically",
+                    "browseButton": "Browse Files",
+                    "formatsText": "Supports JSON format",
+                    "uploadingText": "Uploading catalog data...",
+                    "successTitle": "Published Successfully!",
+                    "successSub": "Your catalog has been broadcast to the network.",
+                    "resetButton": "Upload Another Catalog",
+                    "publishButton": "Publish Catalog",
+                    "publishingButton": "Publishing..."
+                }
+            }
+        }
+    },
+    {
+        "endpoint": "/evcharging",
+        "app": {
+            "title": "EV Power Network",
+            "logo": "/assets/ev-logo.png",
+            "favicon": "/ev-vite.svg"
+        },
+        "theme": {
+            "mode": "light",
+            "palette": {
+                "primary": {
+                    "main": "#2563eb",
+                    "light": "#60a5fa",
+                    "dark": "#1d4ed8",
+                    "contrastText": "#ffffff"
+                },
+                "background": {
+                    "default": "#f8fafc",
+                    "paper": "#ffffff",
+                    "surface": "rgba(255, 255, 255, 0.95)"
+                },
+                "text": {
+                    "primary": "#0f172a",
+                    "secondary": "#475569",
+                    "disabled": "#94a3b8"
+                },
+                "action": {
+                    "active": "#2563eb",
+                    "hover": "rgba(37, 99, 235, 0.08)",
+                    "selected": "rgba(37, 99, 235, 0.12)"
+                }
+            },
+            "typography": {
+                "fontFamily": "'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                "h3": {
+                    "fontSize": "2.25rem",
+                    "fontWeight": 700
+                },
+                "h4": {
+                    "fontSize": "1.75rem",
+                    "fontWeight": 600
+                }
+            },
+            "shape": {
+                "borderRadius": 12,
+                "searchBarRadius": 50,
+                "buttonRadius": 20
+            },
+            "gradients": {
+                "primary": "linear-gradient(135deg, #2563eb 0%, #06b6d4 100%)",
+                "heroText": "linear-gradient(135deg, #1e293b 0%, #2563eb 100%)",
+                "surface": "linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)"
+            },
+            "shadows": {
+                "soft": "0 4px 12px rgba(37, 99, 235, 0.05)",
+                "medium": "0 8px 24px rgba(37, 99, 235, 0.1)",
+                "hard": "0 16px 48px rgba(37, 99, 235, 0.15)",
+                "colored": "0 8px 20px -6px rgba(37, 99, 235, 0.4)"
+            },
+            "icons": {
+                "appLogo": "BatteryChargingFull",
+                "heroSearch": "Bolt",
+                "networkDiscovery": "Explore",
+                "upload": "CloudUpload",
+                "publish": "ElectricBolt",
+                "success": "CheckCircle"
+            },
+            "discovery": {
+                "locationBgOpacity": 0.08,
+                "radiusBgOpacity": 0.10,
+                "jsonpathBgOpacity": 0.12,
+                "borderOpacity": 0.20
+            }
+        },
+        "layout": {
+            "header": {
+                "title": "EV Power Network",
+                "subtitle": "Find Charging Stations Near You",
+                "logo": "/assets/ev-logo.png",
+                "background": "linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%)",
+                "color": "#ffffff"
+            },
+            "sidebar": {
+                "background": "#ffffff",
+                "color": "#1e293b",
+                "activeColor": "#2563eb",
+                "sectionTitle": "EV Charging",
+                "footer": "EV Power Network",
+                "items": [
+                    {
+                        "id": "bap",
+                        "title": "Find Charger",
+                        "description": "Nearest Points",
+                        "icon": "EvStation",
+                        "routes": [
+                            "discovery"
+                        ]
+                    },
+                    {
+                        "id": "bpp",
+                        "title": "Station Admin",
+                        "description": "Manage Network",
+                        "icon": "Settings",
+                        "routes": [
+                            "catalog-publish"
+                        ]
+                    }
+                ]
+            }
+        },
+        "network": {
+            "domain": "beckn.one:ev-charging"
+        },
+        "schemas": {
+            "EVChargingStation": {
+                "label": "Charging Station",
+                "contextUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/draft/schema/EVChargingStation/v1/context.jsonld",
+                "rendererUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/ondc-schema/schema/EVChargingStation/v1/renderer.json"
+            }
+        },
+        "views": {
+            "discovery": {
+                "type": "search",
+                "title": "Find Charging Stations",
+                "subtitle": "Locate available chargers nearby",
+                "api": "/beckn/discover",
+                "context": {
+                    "action": "discover"
+                },
+                "ui": {
+                    "layout": "list",
+                    "background": "linear-gradient(135deg, #faf5ff, #f3e8ff)"
+                },
+                "search": {
+                    "placeholder": "Search by location or station name...",
+                    "radius": 5000
+                },
+                "filters": [
+                    {
+                        "id": "connector",
+                        "label": "Connector Type",
+                        "type": "select",
+                        "uiType": "dropdown",
+                        "options": [
+                            {
+                                "label": "CCS2 Fast Charger",
+                                "value": "ccs2",
+                                "schema": "EVChargingStation",
+                                "defaultSearch": {
+                                    "text": "CCS2 Fast Charger",
+                                    "location": "12.9716,77.5946"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "id": "jsonpath",
+                        "label": "JSONPath Query",
+                        "type": "text",
+                        "options": []
+                    }
+                ],
+                "labels": {
+                    "modeAiTitle": "AI Charger Search",
+                    "modeNetworkTitle": "Network Discovery",
+                    "modeAiSub": "Talk to the network. Describe your vehicle or range needs, and we'll locate the perfect charging point.",
+                    "modeNetworkSub": "Explore the ONDC network using advanced location filters and protocol-level JSONPath queries.",
+                    "tabAi": "Smart Search",
+                    "tabNetwork": "Manual Mode",
+                    "searchPlaceholder": "Where do you want to charge? (e.g. 'Near MG Road with CCS2')",
+                    "actionButton": "Start Network Discovery",
+                    "resultsCount": "Found {count} Charging Points",
+                    "emptyTitle": "Explore the Energy Grid",
+                    "emptySub": "Search by locality, station name, or connector type",
+                    "locationLabel": "Station Location",
+                    "radiusLabel": "Service Radius",
+                    "advancedQueryLabel": "Protocol Query (JSONPath)",
+                    "priceLabel": "Charging Rate",
+                    "viewButton": "Book"
+                }
+            },
+            "catalog-publish": {
+                "type": "form",
+                "title": "Publish Station",
+                "subtitle": "Seamlessly onboard your charging infrastructure. Upload station details to make them visible to EV drivers network-wide.",
+                "api": "/beckn/v2/catalog/publish",
+                "context": {
+                    "action": "catalog_publish",
+                    "ttl": "PT30S"
+                },
+                "labels": {
+                    "dropTitle": "Upload Station Blueprint",
+                    "dropSub": "JSON config files accepted",
+                    "browseButton": "Select Files",
+                    "formatsText": "Protocol compliant JSON only",
+                    "uploadingText": "Provisioning network nodes...",
+                    "successTitle": "Station Live!",
+                    "successSub": "Your charging infrastructure is now discoverable on the network.",
+                    "resetButton": "Onboard Another Station",
+                    "publishButton": "Go Live",
+                    "publishingButton": "Provisioning..."
+                }
+            }
+        }
+    },
+    {
+        "endpoint": "/healthcare",
+        "app": {
+            "title": "HealthConnect Network",
+            "logo": "/assets/health-logo.png",
+            "favicon": "/vite.svg"
+        },
+        "theme": {
+            "mode": "light",
+            "palette": {
+                "primary": {
+                    "main": "#7c3aed",
+                    "light": "#a78bfa",
+                    "dark": "#5b21b6",
+                    "contrastText": "#ffffff"
+                },
+                "background": {
+                    "default": "#faf5ff",
+                    "paper": "#ffffff",
+                    "surface": "rgba(255, 255, 255, 0.98)"
+                },
+                "text": {
+                    "primary": "#1e1b4b",
+                    "secondary": "#6b7280",
+                    "disabled": "#9ca3af"
+                },
+                "action": {
+                    "active": "#7c3aed",
+                    "hover": "rgba(124, 58, 237, 0.06)",
+                    "selected": "rgba(124, 58, 237, 0.10)"
+                }
+            },
+            "typography": {
+                "fontFamily": "'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                "h3": {
+                    "fontSize": "2.5rem",
+                    "fontWeight": 700
+                },
+                "h4": {
+                    "fontSize": "1.5rem",
+                    "fontWeight": 600
+                }
+            },
+            "shape": {
+                "borderRadius": 16,
+                "searchBarRadius": 45,
+                "buttonRadius": 24
+            },
+            "gradients": {
+                "primary": "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)",
+                "heroText": "linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)",
+                "surface": "linear-gradient(135deg, #ffffff 0%, #faf5ff 100%)"
+            },
+            "shadows": {
+                "soft": "0 4px 12px rgba(124, 58, 237, 0.06)",
+                "medium": "0 8px 24px rgba(124, 58, 237, 0.12)",
+                "hard": "0 16px 48px rgba(124, 58, 237, 0.18)",
+                "colored": "0 8px 20px -6px rgba(124, 58, 237, 0.45)"
+            },
+            "icons": {
+                "appLogo": "LocalHospital",
+                "heroSearch": "MedicalServices",
+                "networkDiscovery": "Healing",
+                "upload": "CloudUpload",
+                "publish": "HealthAndSafety",
+                "success": "CheckCircle"
+            },
+            "discovery": {
+                "locationBgOpacity": 0.08,
+                "radiusBgOpacity": 0.10,
+                "jsonpathBgOpacity": 0.12,
+                "borderOpacity": 0.20
+            }
+        },
+        "layout": {
+            "header": {
+                "title": "HealthConnect Network",
+                "subtitle": "Discover Healthcare Services",
+                "logo": "/assets/health-logo.png",
+                "background": "linear-gradient(90deg, #5b21b6 0%, #7c3aed 100%)",
+                "color": "#ffffff"
+            },
+            "sidebar": {
+                "background": "#ffffff",
+                "color": "#374151",
+                "activeColor": "#7c3aed",
+                "sectionTitle": "Healthcare Services",
+                "footer": "HealthConnect Network",
+                "items": [
+                    {
+                        "id": "bap",
+                        "title": "Patient Portal",
+                        "description": "Find Care",
+                        "icon": "PersonSearch",
+                        "routes": [
+                            "discovery"
+                        ]
+                    },
+                    {
+                        "id": "bpp",
+                        "title": "Provider Portal",
+                        "description": "Manage Services",
+                        "icon": "LocalHospital",
+                        "routes": [
+                            "catalog-publish"
+                        ]
+                    }
+                ]
+            }
+        },
+        "network": {
+            "domain": "beckn.one:healthcare"
+        },
+        "schemas": {
+            "TeleconsultationService": {
+                "label": "Teleconsultation",
+                "contextUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/draft/schema/TeleconsultationService/v1/context.jsonld",
+                "rendererUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/ondc-schema/schema/TeleconsultationService/v1/renderer.json"
+            },
+            "DiagnosticService": {
+                "label": "Diagnostics",
+                "contextUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/refs/heads/draft/schema/DiagnosticService/v1/context.jsonld",
+                "rendererUrl": "https://raw.githubusercontent.com/beckn/protocol-specifications-new/ondc-schema/schema/DiagnosticService/v1/renderer.json"
+            }
+        },
+        "views": {
+            "discovery": {
+                "type": "search",
+                "title": "Find Healthcare Services",
+                "subtitle": "Connect with doctors and diagnostic centers",
+                "api": "/beckn/discover",
+                "context": {
+                    "action": "discover"
+                },
+                "ui": {
+                    "layout": "grid",
+                    "background": "linear-gradient(135deg, #faf5ff, #f3e8ff)"
+                },
+                "search": {
+                    "placeholder": "Search for doctors, clinics, or services...",
+                    "radius": 10000
+                },
+                "filters": [
+                    {
+                        "id": "service",
+                        "label": "Service Type",
+                        "type": "select",
+                        "uiType": "chips",
+                        "options": [
+                            {
+                                "label": "Teleconsultation",
+                                "value": "teleconsult",
+                                "schema": "TeleconsultationService",
+                                "defaultSearch": {
+                                    "text": "general physician consultation",
+                                    "location": "12.9716,77.5946"
+                                }
+                            },
+                            {
+                                "label": "Diagnostics",
+                                "value": "diagnostics",
+                                "schema": "DiagnosticService",
+                                "defaultSearch": {
+                                    "text": "blood test complete hemogram",
+                                    "location": "19.0760,72.8777"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "id": "jsonpath",
+                        "label": "JSONPath Query",
+                        "type": "text",
+                        "options": []
+                    }
+                ],
+                "labels": {
+                    "modeAiTitle": "AI Health Assistant",
+                    "modeNetworkTitle": "Network Discovery",
+                    "modeAiSub": "Describe your health needs naturally. Our AI will help you find the right doctors, specialists, and diagnostic services.",
+                    "modeNetworkSub": "Search the healthcare network using location filters and advanced JSONPath queries for precise results.",
+                    "tabAi": "Smart Health Search",
+                    "tabNetwork": "Manual Search",
+                    "searchPlaceholder": "What healthcare service do you need? (e.g. 'Cardiologist near me' or 'Blood test in Bangalore')",
+                    "actionButton": "Search Healthcare Network",
+                    "resultsCount": "Found {count} Healthcare Providers",
+                    "emptyTitle": "Start Your Health Journey",
+                    "emptySub": "Search for doctors, specialists, clinics, or diagnostic services",
+                    "locationLabel": "Service Location",
+                    "radiusLabel": "Search Radius (km)",
+                    "advancedQueryLabel": "Advanced Query (JSONPath)",
+                    "priceLabel": "Consultation Fee",
+                    "viewButton": "Book"
+                }
+            },
+            "catalog-publish": {
+                "type": "form",
+                "title": "Publish Healthcare Services",
+                "subtitle": "Expand your reach. Upload your healthcare services catalog to connect with patients across the network.",
+                "api": "/beckn/v2/catalog/publish",
+                "context": {
+                    "action": "catalog_publish",
+                    "ttl": "PT30S"
+                },
+                "labels": {
+                    "dropTitle": "Upload Service Catalog",
+                    "dropSub": "JSON format supported",
+                    "browseButton": "Browse Files",
+                    "formatsText": "Accepts JSON format",
+                    "uploadingText": "Publishing healthcare services...",
+                    "successTitle": "Services Published!",
+                    "successSub": "Your healthcare services are now discoverable on the network.",
+                    "resetButton": "Publish More Services",
+                    "publishButton": "Publish Services",
+                    "publishingButton": "Publishing..."
+                }
+            }
+        }
+    }
+]
