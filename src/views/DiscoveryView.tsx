@@ -545,7 +545,7 @@ const DiscoveryView: React.FC = () => {
                                         placeholder={viewConfig.labels?.searchPlaceholder || viewConfig.search.placeholder}
                                         value={searchText}
                                         onChange={(e) => setSearchText(e.target.value)}
-                                        onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                                        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                                         sx={{
                                             fontFamily: fontFamily,
                                             fontSize: { xs: '0.85rem', sm: '1.05rem' },
@@ -613,37 +613,66 @@ const DiscoveryView: React.FC = () => {
                                         {/* Location */}
                                         <Box sx={{
                                             flex: 1,
-                                            p: 2.5,
+                                            p: { xs: 2.5, md: 3 },
                                             display: 'flex',
                                             alignItems: 'center',
-                                            bgcolor: 'transparent',
-                                            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)',
-                                            borderRadius: 2,
+                                            bgcolor: alpha(primaryColor, 0.01),
+                                            boxShadow: 'inset 0 2px 6px rgba(0,0,0,0.03)',
+                                            borderRadius: 2.5,
                                             m: { xs: 0.5, md: 1 },
-                                            border: '1px solid',
-                                            borderColor: 'divider',
-                                            transition: 'all 0.3s ease',
+                                            border: '1.5px solid',
+                                            borderColor: alpha(primaryColor, 0.12),
+                                            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                                             cursor: 'text',
+                                            position: 'relative',
                                             '&:hover': {
                                                 borderColor: primaryColor,
-                                                boxShadow: `inset 0 3px 6px rgba(0,0,0,0.06), 0 0 0 1px ${alpha(primaryColor, 0.1)}`,
-                                                bgcolor: alpha(primaryColor, 0.02)
+                                                boxShadow: `inset 0 4px 8px rgba(0,0,0,0.06), 0 0 0 2px ${alpha(primaryColor, 0.12)}, 0 4px 12px ${alpha(primaryColor, 0.15)}`,
+                                                bgcolor: alpha(primaryColor, 0.03),
+                                                transform: 'translateY(-1px)'
+                                            },
+                                            '&:focus-within': {
+                                                borderColor: primaryColor,
+                                                boxShadow: `inset 0 4px 8px rgba(0,0,0,0.06), 0 0 0 3px ${alpha(primaryColor, 0.15)}, 0 8px 20px ${alpha(primaryColor, 0.2)}`,
+                                                bgcolor: alpha(primaryColor, 0.04)
                                             }
                                         }}>
-                                            {renderIcon('LocationOn', { sx: { color: primaryColor, fontSize: 24, mr: 2 } })}
+                                            <Box sx={{
+                                                bgcolor: alpha(primaryColor, 0.1),
+                                                borderRadius: '50%',
+                                                p: 1,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                mr: 2.5
+                                            }}>
+                                                {renderIcon('LocationOn', { sx: { color: primaryColor, fontSize: 24 } })}
+                                            </Box>
                                             <Box sx={{ flex: 1 }}>
-                                                <Typography variant="caption" fontWeight={700} sx={{ color: primaryColor, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', mb: 0.5 }}>
+                                                <Typography variant="caption" fontWeight={700} sx={{
+                                                    color: primaryColor,
+                                                    textTransform: 'uppercase',
+                                                    letterSpacing: '0.08em',
+                                                    display: 'block',
+                                                    mb: 0.75,
+                                                    fontSize: '0.7rem'
+                                                }}>
+                                                    {renderIcon('MyLocation', { sx: { fontSize: 12, mr: 0.5, verticalAlign: 'middle' } })}
                                                     {viewConfig.labels?.locationLabel || "Target Location"}
                                                 </Typography>
                                                 <InputBase
                                                     fullWidth
-                                                    placeholder="12.9716, 77.5946"
+                                                    placeholder="Enter coordinates (e.g., 12.9716, 77.5946)"
                                                     defaultValue="12.9716, 77.5946"
                                                     sx={{
                                                         fontFamily: fontFamily,
-                                                        fontWeight: 500,
-                                                        fontSize: '1rem',
-                                                        color: config.theme.palette.text.primary
+                                                        fontWeight: 600,
+                                                        fontSize: '1.05rem',
+                                                        color: config.theme.palette.text.primary,
+                                                        '& input::placeholder': {
+                                                            fontSize: '0.9rem',
+                                                            fontWeight: 400
+                                                        }
                                                     }}
                                                 />
                                             </Box>
@@ -656,29 +685,57 @@ const DiscoveryView: React.FC = () => {
 
                                         {/* Radius */}
                                         <Box sx={{
-                                            width: { xs: '100%', sm: '35%' },
-                                            p: 2.5,
-                                            bgcolor: 'transparent',
-                                            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)',
-                                            borderRadius: 2,
+                                            width: { xs: 'auto', sm: '33%' },
+                                            p: { xs: 2.5, md: 3 },
+                                            bgcolor: alpha(primaryColor, 0.01),
+                                            boxShadow: 'inset 0 2px 6px rgba(0,0,0,0.03)',
+                                            borderRadius: 2.5,
                                             m: { xs: 0.5, md: 1 },
-                                            border: '1px solid',
-                                            borderColor: 'divider',
-                                            transition: 'all 0.3s ease',
+                                            border: '1.5px solid',
+                                            borderColor: alpha(primaryColor, 0.12),
+                                            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                                             cursor: 'pointer',
+                                            position: 'relative',
                                             '&:hover': {
                                                 borderColor: primaryColor,
-                                                boxShadow: `inset 0 3px 6px rgba(0,0,0,0.06), 0 0 0 1px ${alpha(primaryColor, 0.1)}`,
-                                                bgcolor: alpha(primaryColor, 0.02)
+                                                boxShadow: `inset 0 4px 8px rgba(0,0,0,0.06), 0 0 0 2px ${alpha(primaryColor, 0.12)}, 0 4px 12px ${alpha(primaryColor, 0.15)}`,
+                                                bgcolor: alpha(primaryColor, 0.03),
+                                                transform: 'translateY(-1px)'
                                             }
                                         }}>
-                                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
-                                                <Typography variant="caption" fontWeight={700} sx={{ color: primaryColor, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                                    {viewConfig.labels?.radiusLabel || "Search Radius"}
-                                                </Typography>
-                                                <Typography variant="caption" fontWeight={700} sx={{ color: primaryColor }}>
-                                                    {radius}m
-                                                </Typography>
+                                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                                    <Box sx={{
+                                                        bgcolor: alpha(primaryColor, 0.1),
+                                                        borderRadius: '50%',
+                                                        p: 0.5,
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center'
+                                                    }}>
+                                                        {renderIcon('Radar', { sx: { color: primaryColor, fontSize: 16 } })}
+                                                    </Box>
+                                                    <Typography variant="caption" fontWeight={700} sx={{
+                                                        color: primaryColor,
+                                                        textTransform: 'uppercase',
+                                                        letterSpacing: '0.08em',
+                                                        fontSize: '0.7rem'
+                                                    }}>
+                                                        {viewConfig.labels?.radiusLabel || "Search Radius"}
+                                                    </Typography>
+                                                </Box>
+                                                <Chip
+                                                    label={`${radius}m`}
+                                                    size="small"
+                                                    sx={{
+                                                        bgcolor: primaryColor,
+                                                        color: '#fff',
+                                                        fontWeight: 700,
+                                                        fontSize: '0.75rem',
+                                                        height: 24,
+                                                        borderRadius: 1.5
+                                                    }}
+                                                />
                                             </Box>
                                             <Slider
                                                 value={radius}
@@ -686,21 +743,36 @@ const DiscoveryView: React.FC = () => {
                                                 min={100}
                                                 max={10000}
                                                 step={100}
-                                                size="small"
+                                                size="medium"
                                                 sx={{
+                                                    width: '90%',
+                                                    mx: 'auto',
+                                                    display: 'block',
                                                     color: primaryColor,
-                                                    height: 4,
+                                                    height: 6,
                                                     p: 1,
                                                     '& .MuiSlider-thumb': {
-                                                        width: 14,
-                                                        height: 14,
+                                                        width: 18,
+                                                        height: 18,
                                                         transition: '0.3s cubic-bezier(.47,1.64,.41,.8)',
+                                                        boxShadow: `0 2px 4px ${alpha(primaryColor, 0.3)}`,
                                                         '&:before': { boxShadow: 'none' },
                                                         '&:hover, &.Mui-focusVisible': {
-                                                            boxShadow: `0 0 0 6px ${alpha(primaryColor, 0.1)}`
+                                                            boxShadow: `0 0 0 8px ${alpha(primaryColor, 0.15)}, 0 3px 6px ${alpha(primaryColor, 0.4)}`,
+                                                            transform: 'scale(1.1)'
+                                                        },
+                                                        '&:active': {
+                                                            boxShadow: `0 0 0 12px ${alpha(primaryColor, 0.2)}`
                                                         }
                                                     },
-                                                    '& .MuiSlider-rail': { opacity: 0.2 }
+                                                    '& .MuiSlider-track': {
+                                                        height: 6,
+                                                        background: `linear-gradient(90deg, ${alpha(primaryColor, 0.6)} 0%, ${primaryColor} 100%)`
+                                                    },
+                                                    '& .MuiSlider-rail': {
+                                                        opacity: 0.15,
+                                                        height: 6
+                                                    }
                                                 }}
                                             />
                                         </Box>
@@ -711,40 +783,94 @@ const DiscoveryView: React.FC = () => {
                                     {/* Row 2: Advanced Filter */}
                                     {jsonpathFilter && (
                                         <Box sx={{
-                                            p: 2.5,
-                                            bgcolor: 'transparent',
-                                            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)',
-                                            borderRadius: 2,
+                                            p: { xs: 2.5, md: 3 },
+                                            bgcolor: alpha(primaryColor, 0.01),
+                                            boxShadow: 'inset 0 2px 6px rgba(0,0,0,0.03)',
+                                            borderRadius: 2.5,
                                             m: { xs: 0.5, md: 1 },
-                                            border: '1px solid',
-                                            borderColor: 'divider',
-                                            transition: 'all 0.3s ease',
+                                            border: '1.5px solid',
+                                            borderColor: alpha(primaryColor, 0.12),
+                                            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                                             cursor: 'text',
+                                            position: 'relative',
                                             '&:hover': {
                                                 borderColor: primaryColor,
-                                                boxShadow: `inset 0 3px 6px rgba(0,0,0,0.06), 0 0 0 1px ${alpha(primaryColor, 0.1)}`,
-                                                bgcolor: alpha(primaryColor, 0.02)
+                                                boxShadow: `inset 0 4px 8px rgba(0,0,0,0.06), 0 0 0 2px ${alpha(primaryColor, 0.12)}, 0 4px 12px ${alpha(primaryColor, 0.15)}`,
+                                                bgcolor: alpha(primaryColor, 0.03),
+                                                transform: 'translateY(-1px)'
+                                            },
+                                            '&:focus-within': {
+                                                borderColor: primaryColor,
+                                                boxShadow: `inset 0 4px 8px rgba(0,0,0,0.06), 0 0 0 3px ${alpha(primaryColor, 0.15)}, 0 8px 20px ${alpha(primaryColor, 0.2)}`,
+                                                bgcolor: alpha(primaryColor, 0.04)
                                             }
                                         }}>
-                                            <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
-                                                {renderIcon('Code', { sx: { fontSize: 20, color: 'text.secondary', mr: 2, transform: 'translateY(4px)' } })}
+                                            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2.5 }}>
+                                                <Box sx={{
+                                                    bgcolor: alpha(primaryColor, 0.1),
+                                                    borderRadius: '50%',
+                                                    p: 1,
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    flexShrink: 0,
+                                                    mt: 0.5
+                                                }}>
+                                                    {renderIcon('Code', { sx: { fontSize: 20, color: primaryColor } })}
+                                                </Box>
                                                 <Box sx={{ flex: 1 }}>
-                                                    <Typography variant="caption" fontWeight={700} sx={{ color: primaryColor, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', mb: 0.5 }}>
-                                                        {viewConfig.labels?.advancedQueryLabel || "Advanced Query (JSONPath)"}
-                                                    </Typography>
+                                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.75 }}>
+                                                        <Typography variant="caption" fontWeight={700} sx={{
+                                                            color: primaryColor,
+                                                            textTransform: 'uppercase',
+                                                            letterSpacing: '0.08em',
+                                                            fontSize: '0.7rem'
+                                                        }}>
+                                                            {renderIcon('FilterAlt', { sx: { fontSize: 12, mr: 0.5, verticalAlign: 'middle' } })}
+                                                            {viewConfig.labels?.advancedQueryLabel || "Advanced Filter"}
+                                                        </Typography>
+                                                        <Chip
+                                                            label="JSONPath"
+                                                            size="small"
+                                                            variant="outlined"
+                                                            sx={{
+                                                                borderColor: primaryColor,
+                                                                color: primaryColor,
+                                                                fontWeight: 600,
+                                                                fontSize: '0.65rem',
+                                                                height: 20,
+                                                                borderRadius: 1
+                                                            }}
+                                                        />
+                                                    </Box>
                                                     <InputBase
                                                         fullWidth
                                                         multiline
-                                                        rows={1} // Compact by default
-                                                        placeholder="$.message.catalog.bpp/providers[?(@.id=='P1')]"
+                                                        rows={1}
+                                                        placeholder="e.g., $.message.catalog.bpp/providers[?(@.id=='P1')]"
                                                         value={filters[jsonpathFilter!.id] || ''}
                                                         onChange={(e) => setFilters({ ...filters, [jsonpathFilter!.id]: e.target.value })}
                                                         sx={{
-                                                            fontFamily: 'Consolas, Monaco, monospace',
+                                                            fontFamily: 'Consolas, Monaco, "Courier New", monospace',
                                                             fontSize: '0.9rem',
-                                                            color: config.theme.palette.text.primary
+                                                            fontWeight: 500,
+                                                            color: config.theme.palette.text.primary,
+                                                            '& textarea::placeholder': {
+                                                                fontSize: '0.85rem',
+                                                                fontWeight: 400
+                                                            }
                                                         }}
                                                     />
+                                                    <Typography variant="caption" sx={{
+                                                        display: 'block',
+                                                        mt: 1,
+                                                        color: 'text.secondary',
+                                                        fontSize: '0.7rem',
+                                                        fontStyle: 'italic'
+                                                    }}>
+                                                        {renderIcon('Info', { sx: { fontSize: 11, mr: 0.5, verticalAlign: 'middle' } })}
+                                                        Use JSONPath syntax to filter catalog items precisely
+                                                    </Typography>
                                                 </Box>
                                             </Box>
                                         </Box>
