@@ -1,7 +1,7 @@
 
 import Ajv from 'ajv';
-import schema from '../../public/config.schema.json';
-import { AppConfig } from './types';
+import schema from './config.schema.json';
+import type { AppConfig } from './types';
 
 const ajv = new Ajv({ allErrors: true });
 const validate = ajv.compile(schema);

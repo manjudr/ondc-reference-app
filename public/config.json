@@ -1,6 +1,6 @@
 [
     {
-        "$schema": "./config.schema.json",
+        "$schema": "../src/config/config.schema.json",
         "endpoint": "/retail",
         "app": {
             "title": "ONDC Merchant",

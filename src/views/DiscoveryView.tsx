@@ -518,7 +518,7 @@ const DiscoveryView: React.FC = () => {
                                         p: { xs: '4px', sm: '6px' },
                                         display: 'flex',
                                         alignItems: 'center',
-                                        flexWrap: 'wrap',
+                                        flexWrap: 'nowrap',
                                         borderRadius: `${config.theme.shape.searchBarRadius}px`,
                                         bgcolor: '#ffffff',
                                         border: '1px solid',
@@ -536,7 +536,7 @@ const DiscoveryView: React.FC = () => {
                                         }
                                     }}
                                 >
-                                    <Box sx={{ pl: { xs: 2, sm: 3 }, pr: { xs: 1, sm: 2 }, display: 'flex', alignItems: 'center', color: alpha(primaryColor, 0.7) }}>
+                                    <Box sx={{ pl: { xs: 1.5, sm: 3 }, pr: { xs: 0.5, sm: 2 }, display: 'flex', alignItems: 'center', color: alpha(primaryColor, 0.7) }}>
                                         {renderIcon('Search', { sx: { fontSize: { xs: 20, sm: 24 } } })}
                                     </Box>
                                     <InputBase
@@ -548,16 +548,20 @@ const DiscoveryView: React.FC = () => {
                                         onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                                         sx={{
                                             fontFamily: fontFamily,
-                                            fontSize: { xs: '0.95rem', sm: '1.05rem' },
+                                            fontSize: { xs: '0.85rem', sm: '1.05rem' },
                                             fontWeight: 400,
                                             color: config.theme.palette.text.primary,
                                             py: { xs: 0.5, sm: 0.5 },
                                             px: { xs: 0.5, sm: 0 },
                                             flex: 1,
-                                            minWidth: { xs: '150px', sm: 'auto' },
+                                            minWidth: { xs: '100px', sm: 'auto' },
+                                            '& input': {
+                                                textOverflow: 'ellipsis'
+                                            },
                                             '& input::placeholder': {
                                                 color: config.theme.palette.text.secondary,
-                                                opacity: 0.6
+                                                opacity: 0.6,
+                                                fontSize: { xs: '0.85rem', sm: '1.05rem' }
                                             }
                                         }}
                                     />
