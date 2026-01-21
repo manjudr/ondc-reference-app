@@ -58,18 +58,24 @@
                         "properties": {
                             "primary": {
                                 "type": "object",
+                                "description": "Primary brand color palette.",
                                 "properties": {
                                     "main": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Main primary brand color (hex or rgba)."
                                     },
                                     "light": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Lighter variant of primary color for backgrounds/hover states."
                                     },
                                     "dark": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Darker variant of primary color for emphasis."
                                     },
                                     "contrastText": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "default": "#ffffff",
+                                        "description": "Text color that contrasts with primary color (usually white)."
                                     }
                                 },
                                 "required": [
@@ -78,15 +84,20 @@
                             },
                             "background": {
                                 "type": "object",
+                                "description": "Background colors for various surfaces.",
                                 "properties": {
                                     "default": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Default page background color."
                                     },
                                     "paper": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "default": "#ffffff",
+                                        "description": "Background for cards, modals, and elevated surfaces."
                                     },
                                     "surface": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Alternative surface background (can use gradients or rgba)."
                                     }
                                 },
                                 "required": [
@@ -95,26 +106,37 @@
                             },
                             "text": {
                                 "type": "object",
+                                "description": "Text colors for different hierarchy levels.",
                                 "properties": {
                                     "primary": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Primary text color for headings and body text."
                                     },
                                     "secondary": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Secondary text color for captions and helper text."
                                     },
                                     "disabled": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Text color for disabled states."
                                     }
                                 }
                             },
                             "action": {
                                 "type": "object",
+                                "description": "Action state colors for interactive elements.",
                                 "properties": {
                                     "active": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Color for active state."
                                     },
                                     "hover": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Color for hover state (can use rgba for transparency)."
+                                    },
+                                    "selected": {
+                                        "type": "string",
+                                        "description": "Color for selected state (can use rgba for transparency)."
                                     }
                                 }
                             }
@@ -122,27 +144,63 @@
                     },
                     "typography": {
                         "type": "object",
-                        "description": "Typography settings.",
+                        "description": "Typography settings including font family and heading styles.",
                         "properties": {
                             "fontFamily": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "CSS font-family stack for the application."
+                            },
+                            "h3": {
+                                "type": "object",
+                                "description": "Heading 3 typography settings.",
+                                "properties": {
+                                    "fontSize": {
+                                        "type": "string",
+                                        "description": "Font size (CSS units, e.g., '2.25rem')."
+                                    },
+                                    "fontWeight": {
+                                        "type": "number",
+                                        "description": "Font weight (100-900)."
+                                    }
+                                }
+                            },
+                            "h4": {
+                                "type": "object",
+                                "description": "Heading 4 typography settings.",
+                                "properties": {
+                                    "fontSize": {
+                                        "type": "string",
+                                        "description": "Font size (CSS units, e.g., '1.25rem')."
+                                    },
+                                    "fontWeight": {
+                                        "type": "number",
+                                        "description": "Font weight (100-900)."
+                                    }
+                                }
                             }
+                        },
+                        "additionalProperties": {
+                            "type": "object"
                         }
                     },
                     "shape": {
                         "type": "object",
+                        "description": "Border radius settings for various UI elements.",
                         "properties": {
                             "borderRadius": {
                                 "type": "number",
-                                "description": "Border radius for standard cards and containers."
+                                "default": 12,
+                                "description": "Default border radius for standard cards and containers (in pixels)."
                             },
                             "searchBarRadius": {
                                 "type": "number",
-                                "description": "Border radius specifically for search bars and top-level inputs."
+                                "default": 40,
+                                "description": "Border radius specifically for search bars and top-level inputs (in pixels)."
                             },
                             "buttonRadius": {
                                 "type": "number",
-                                "description": "Border radius specifically for primary and secondary buttons."
+                                "default": 20,
+                                "description": "Border radius specifically for primary and secondary buttons (in pixels)."
                             }
                         }
                     },
@@ -162,8 +220,55 @@
                     },
                     "icons": {
                         "type": "object",
+                        "description": "Icon name mappings for UI elements (use Material Icons names).",
+                        "properties": {
+                            "upload": {
+                                "type": "string",
+                                "default": "CloudUpload",
+                                "description": "Icon for upload/file input actions."
+                            },
+                            "success": {
+                                "type": "string",
+                                "default": "CheckCircle",
+                                "description": "Icon for success states."
+                            }
+                        },
                         "additionalProperties": {
                             "type": "string"
+                        }
+                    },
+                    "discovery": {
+                        "type": "object",
+                        "description": "Visual styling configuration for Discovery view input sections.",
+                        "properties": {
+                            "locationBgOpacity": {
+                                "type": "number",
+                                "default": 0.08,
+                                "minimum": 0,
+                                "maximum": 1,
+                                "description": "Background opacity for the Location input section (0-1)."
+                            },
+                            "radiusBgOpacity": {
+                                "type": "number",
+                                "default": 0.10,
+                                "minimum": 0,
+                                "maximum": 1,
+                                "description": "Background opacity for the Radius slider section (0-1)."
+                            },
+                            "jsonpathBgOpacity": {
+                                "type": "number",
+                                "default": 0.12,
+                                "minimum": 0,
+                                "maximum": 1,
+                                "description": "Background opacity for the JSONPath/Advanced Query section (0-1)."
+                            },
+                            "borderOpacity": {
+                                "type": "number",
+                                "default": 0.20,
+                                "minimum": 0,
+                                "maximum": 1,
+                                "description": "Border opacity for all Discovery input sections (0-1)."
+                            }
                         }
                     }
                 },
@@ -230,6 +335,14 @@
                                 "pattern": "^(#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})|rgba?\\(.*\\))$",
                                 "description": "CSS color for the currently active/selected sidebar item."
                             },
+                            "sectionTitle": {
+                                "type": "string",
+                                "description": "Section title displayed at the top of the sidebar."
+                            },
+                            "footer": {
+                                "type": "string",
+                                "description": "Footer text displayed at the bottom of the sidebar."
+                            },
                             "items": {
                                 "type": "array",
                                 "description": "List of navigation items to display in the sidebar.",
@@ -243,6 +356,10 @@
                                         "title": {
                                             "type": "string",
                                             "description": "Display label for the sidebar item."
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Subtitle or additional context displayed below the title."
                                         },
                                         "icon": {
                                             "type": "string",
