@@ -450,66 +450,64 @@ const DiscoveryView: React.FC = () => {
                             </Typography>
                         </Box>
 
-                        {/* Custom Segmented Tabs */}
-                        <Paper
-                            elevation={0}
-                            sx={{
-                                display: 'inline-flex',
-                                p: { xs: '6px', sm: '4px' },
-                                mb: { xs: 3, sm: 4, md: 5 },
-                                borderRadius: { xs: `${config.theme.shape.buttonRadius + 8}px`, sm: `${config.theme.shape.searchBarRadius}px` },
-                                bgcolor: config.theme.palette.background.default,
-                                mx: 'auto',
-                                position: 'relative',
-                                left: { xs: 0, sm: '50%' },
-                                transform: { xs: 'none', sm: 'translateX(-50%)' },
-                                border: '1px solid',
-                                borderColor: 'divider',
-                                boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.05)',
-                                flexDirection: { xs: 'column', sm: 'row' },
-                                width: { xs: 'calc(100% - 32px)', sm: 'auto' },
-                                maxWidth: { xs: 'calc(100% - 32px)', sm: 'none' },
-                                gap: { xs: '4px', sm: 0 }
-                            }}
-                        >
-                            {[
-                                { label: viewConfig.labels?.tabAi || 'AI Search', value: 0 },
-                                { label: viewConfig.labels?.tabNetwork || 'Network Discovery', value: 1 }
-                            ].map((tab) => (
-                                <Button
-                                    key={tab.value}
-                                    onClick={() => setSearchMode(tab.value)}
-                                    startIcon={tab.value === 0 ? renderIcon(heroIconName, { sx: { fontSize: 16 } }) : renderIcon(discoveryIconName, { sx: { fontSize: 16 } })}
-                                    size="small"
-                                    sx={{
-                                        borderRadius: `${config.theme.shape.buttonRadius}px`,
-                                        px: { xs: 2, sm: 2.5 },
-                                        py: 0.6,
-                                        minHeight: 32,
-                                        textTransform: 'none',
-                                        fontWeight: 600,
-                                        fontSize: { xs: '0.8rem', sm: '0.85rem' },
-                                        fontFamily: fontFamily,
-                                        color: searchMode === tab.value ? config.theme.palette.primary.contrastText : 'text.secondary',
-                                        background: searchMode === tab.value ? primaryColor : 'transparent',
-                                        boxShadow: searchMode === tab.value ? config.theme.shadows.soft : 'none',
-                                        border: 'none',
-                                        outline: 'none',
-                                        transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                                        width: { xs: '100%', sm: 'auto' },
-                                        '&:hover': {
-                                            color: searchMode === tab.value ? config.theme.palette.primary.contrastText : primaryColor,
-                                            background: searchMode === tab.value ? primaryColor : config.theme.palette.background.paper
-                                        },
-                                        '&:focus': {
-                                            outline: 'none'
-                                        }
-                                    }}
-                                >
-                                    {tab.label}
-                                </Button>
-                            ))}
-                        </Paper>
+                        {/* Custom Segmented Tabs - Centered Container */}
+                        <Box sx={{ display: 'flex', justifyContent: 'center', mb: { xs: 3, sm: 4, md: 5 } }}>
+                            <Paper
+                                elevation={0}
+                                sx={{
+                                    display: 'inline-flex',
+                                    p: { xs: '6px', sm: '4px' },
+                                    borderRadius: { xs: `${config.theme.shape.buttonRadius + 8}px`, sm: `${config.theme.shape.searchBarRadius}px` },
+                                    bgcolor: config.theme.palette.background.default,
+                                    position: 'relative',
+                                    border: '1px solid',
+                                    borderColor: 'divider',
+                                    boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.05)',
+                                    flexDirection: 'row',
+                                    width: 'auto',
+                                    maxWidth: { xs: 'calc(100% - 32px)', sm: 'none' },
+                                    gap: 0
+                                }}
+                            >
+                                {[
+                                    { label: viewConfig.labels?.tabAi || 'AI Search', value: 0 },
+                                    { label: viewConfig.labels?.tabNetwork || 'Network Discovery', value: 1 }
+                                ].map((tab) => (
+                                    <Button
+                                        key={tab.value}
+                                        onClick={() => setSearchMode(tab.value)}
+                                        startIcon={tab.value === 0 ? renderIcon(heroIconName, { sx: { fontSize: 16 } }) : renderIcon(discoveryIconName, { sx: { fontSize: 16 } })}
+                                        size="small"
+                                        sx={{
+                                            borderRadius: `${config.theme.shape.buttonRadius}px`,
+                                            px: { xs: 2, sm: 2.5 },
+                                            py: 0.6,
+                                            minHeight: 32,
+                                            textTransform: 'none',
+                                            fontWeight: 600,
+                                            fontSize: { xs: '0.8rem', sm: '0.85rem' },
+                                            fontFamily: fontFamily,
+                                            color: searchMode === tab.value ? config.theme.palette.primary.contrastText : 'text.secondary',
+                                            background: searchMode === tab.value ? primaryColor : 'transparent',
+                                            boxShadow: searchMode === tab.value ? config.theme.shadows.soft : 'none',
+                                            border: 'none',
+                                            outline: 'none',
+                                            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                                            width: 'auto',
+                                            '&:hover': {
+                                                color: searchMode === tab.value ? config.theme.palette.primary.contrastText : primaryColor,
+                                                background: searchMode === tab.value ? primaryColor : config.theme.palette.background.paper
+                                            },
+                                            '&:focus': {
+                                                outline: 'none'
+                                            }
+                                        }}
+                                    >
+                                        {tab.label}
+                                    </Button>
+                                ))}
+                            </Paper>
+                        </Box>
 
                         {/* MODE A: AI TEXT SEARCH */}
                         {searchMode === 0 && (
@@ -607,7 +605,7 @@ const DiscoveryView: React.FC = () => {
                                     }}
                                 >
                                     {/* Row 1: Location & Radius */}
-                                    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}>
+                                    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
                                         {/* Location */}
                                         <Box sx={{
                                             flex: 1,
@@ -617,7 +615,7 @@ const DiscoveryView: React.FC = () => {
                                             bgcolor: 'transparent',
                                             boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)',
                                             borderRadius: 2,
-                                            m: 1,
+                                            m: { xs: 0.5, md: 1 },
                                             border: '1px solid',
                                             borderColor: 'divider',
                                             transition: 'all 0.3s ease',
@@ -647,19 +645,19 @@ const DiscoveryView: React.FC = () => {
                                             </Box>
                                         </Box>
 
-                                        {/* Vertical Divider for Desktop */}
-                                        <Box sx={{ width: '1px', bgcolor: 'divider', display: { xs: 'none', md: 'block' } }} />
+                                        {/* Vertical Divider for Tablet+ */}
+                                        <Box sx={{ width: '1px', bgcolor: 'divider', display: { xs: 'none', sm: 'block' } }} />
                                         {/* Horizontal Divider for Mobile */}
-                                        <Box sx={{ height: '1px', bgcolor: 'divider', display: { xs: 'block', md: 'none' } }} />
+                                        <Box sx={{ height: '1px', bgcolor: 'divider', display: { xs: 'block', sm: 'none' } }} />
 
                                         {/* Radius */}
                                         <Box sx={{
-                                            width: { xs: '100%', md: '35%' },
+                                            width: { xs: '100%', sm: '35%' },
                                             p: 2.5,
                                             bgcolor: 'transparent',
                                             boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)',
                                             borderRadius: 2,
-                                            m: 1,
+                                            m: { xs: 0.5, md: 1 },
                                             border: '1px solid',
                                             borderColor: 'divider',
                                             transition: 'all 0.3s ease',
@@ -713,7 +711,7 @@ const DiscoveryView: React.FC = () => {
                                             bgcolor: 'transparent',
                                             boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)',
                                             borderRadius: 2,
-                                            m: 1,
+                                            m: { xs: 0.5, md: 1 },
                                             border: '1px solid',
                                             borderColor: 'divider',
                                             transition: 'all 0.3s ease',
