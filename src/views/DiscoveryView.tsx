@@ -436,10 +436,28 @@ const DiscoveryView: React.FC = () => {
                                     justifyContent: 'center',
                                     gap: { xs: 1, sm: 2 },
                                     fontSize: { xs: '1.75rem', sm: '2rem', md: '2.25rem' },
-                                    flexWrap: 'wrap'
+                                    flexWrap: 'wrap',
+                                    ...(searchMode === 0 && {
+                                        background: `linear-gradient(45deg, ${config.theme.palette.primary.main} 30%, ${config.theme.palette.primary.light} 50%, ${config.theme.palette.primary.main} 70%)`,
+                                        backgroundSize: '200% auto',
+                                        WebkitBackgroundClip: 'text',
+                                        WebkitTextFillColor: 'transparent',
+                                        animation: 'shine 4s linear infinite',
+                                        '@keyframes shine': {
+                                            '0%': { backgroundPosition: '0% 50%' },
+                                            '100%': { backgroundPosition: '200% 50%' }
+                                        }
+                                    })
                                 }}
                             >
-                                {searchMode === 0 && renderIcon(heroIconName, { sx: { fontSize: { xs: 32, sm: 36, md: 40 }, color: primaryColor } })}
+                                {searchMode === 0 && renderIcon(heroIconName, {
+                                    sx: {
+                                        fontSize: { xs: 32, sm: 36, md: 40 },
+                                        color: primaryColor,
+                                        mr: 1,
+                                        animation: 'pulse-glow 2s infinite ease-in-out'
+                                    }
+                                })}
                                 {searchMode === 0 ? (viewConfig.labels?.modeAiTitle || "AI Product Search") : (viewConfig.labels?.modeNetworkTitle || "Network Discovery")}
                             </Typography>
                             <Typography variant="body1" color="text.secondary" sx={{ fontFamily: fontFamily, maxWidth: 660, mx: 'auto', fontSize: { xs: '0.9rem', sm: '1rem' }, px: { xs: 1, sm: 0 } }}>
@@ -476,7 +494,11 @@ const DiscoveryView: React.FC = () => {
                                     <Button
                                         key={tab.value}
                                         onClick={() => setSearchMode(tab.value)}
-                                        startIcon={tab.value === 0 ? renderIcon(heroIconName, { sx: { fontSize: 16 } }) : renderIcon(discoveryIconName, { sx: { fontSize: 16 } })}
+                                        startIcon={
+                                            tab.value === 0
+                                                ? renderIcon(heroIconName, { sx: { fontSize: 16 } })
+                                                : renderIcon(discoveryIconName, { sx: { fontSize: 16 } })
+                                        }
                                         size="small"
                                         sx={{
                                             borderRadius: `${config.theme.shape.buttonRadius}px`,
@@ -537,7 +559,17 @@ const DiscoveryView: React.FC = () => {
                                     }}
                                 >
                                     <Box sx={{ pl: { xs: 1.5, sm: 3 }, pr: { xs: 0.5, sm: 2 }, display: 'flex', alignItems: 'center', color: alpha(primaryColor, 0.7) }}>
-                                        {renderIcon('Search', { sx: { fontSize: { xs: 20, sm: 24 } } })}
+                                        {renderIcon(heroIconName, {
+                                            sx: {
+                                                fontSize: { xs: 20, sm: 24 },
+                                                animation: 'pulse-glow 2s infinite ease-in-out',
+                                                '@keyframes pulse-glow': {
+                                                    '0%': { filter: `drop-shadow(0 0 1px ${alpha(primaryColor, 0.3)})`, transform: 'scale(1)' },
+                                                    '50%': { filter: `drop-shadow(0 0 5px ${alpha(primaryColor, 0.7)})`, transform: 'scale(1.15)' },
+                                                    '100%': { filter: `drop-shadow(0 0 1px ${alpha(primaryColor, 0.3)})`, transform: 'scale(1)' }
+                                                }
+                                            }
+                                        })}
                                     </Box>
                                     <InputBase
                                         fullWidth
