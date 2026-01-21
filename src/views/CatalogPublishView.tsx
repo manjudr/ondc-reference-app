@@ -142,10 +142,12 @@ const CatalogPublishView: React.FC = () => {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    gap: 2
+                                    gap: { xs: 1, sm: 2 },
+                                    flexWrap: 'wrap',
+                                    fontSize: { xs: '1.75rem', sm: '2.25rem' }
                                 }}
                             >
-                                {renderIcon(publishIcon, { sx: { fontSize: 40, color: primaryColor } })}
+                                {renderIcon(publishIcon, { sx: { fontSize: { xs: 32, sm: 40 }, color: primaryColor } })}
                                 {viewConfig!.title}
                             </Typography>
                             {viewConfig!.subtitle && (
