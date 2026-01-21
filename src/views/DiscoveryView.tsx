@@ -381,8 +381,18 @@ const DiscoveryView: React.FC = () => {
     };
 
     // Derived filtering for JSONPath/Category based on config
-    const categoryFilter = filterDefinitions?.find(f => f.id === 'category');
+    const primaryFilter = filterDefinitions?.find(f => f.id !== 'jsonpath');
     const jsonpathFilter = filterDefinitions?.find(f => f.id === 'jsonpath');
+
+    // Default Selection Logic
+    React.useEffect(() => {
+        if (primaryFilter && primaryFilter.options?.length > 0 && !filters[primaryFilter.id]) {
+            setFilters(prev => ({
+                ...prev,
+                [primaryFilter.id]: primaryFilter.options[0].value
+            }));
+        }
+    }, [primaryFilter, filters]);
 
     // Validation for Discovery Mode
     const isDiscoveryValid = () => {
@@ -910,31 +920,45 @@ const DiscoveryView: React.FC = () => {
                                 </Paper>
 
                                 {/* Category Chips - Outside */}
-                                {categoryFilter && (
-                                    <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+                                {primaryFilter && (
+                                    <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                        <Typography
+                                            variant="caption"
+                                            sx={{
+                                                mb: 1.5,
+                                                color: 'text.secondary',
+                                                fontWeight: 600,
+                                                fontSize: '0.7rem',
+                                                letterSpacing: '0.05em',
+                                                textTransform: 'uppercase'
+                                            }}
+                                        >
+                                            SELECT {primaryFilter.label || 'CATEGORY'}
+                                        </Typography>
                                         <Stack direction="row" spacing={1} flexWrap="wrap" justifyContent="center" useFlexGap sx={{ maxWidth: 600 }}>
-                                            {categoryFilter.options.map(opt => (
+                                            {primaryFilter.options.map(opt => (
                                                 <Chip
                                                     key={opt.value}
                                                     label={opt.label}
                                                     clickable
                                                     onClick={() => setFilters({
                                                         ...filters,
-                                                        [categoryFilter!.id]: filters[categoryFilter!.id] === opt.value ? '' : opt.value
+                                                        [primaryFilter!.id]: opt.value
                                                     })}
                                                     sx={{
-                                                        bgcolor: filters[categoryFilter!.id] === opt.value ? primaryColor : config.theme.palette.background.default,
+                                                        height: 32,
+                                                        borderRadius: '16px', // Pill shape
+                                                        bgcolor: filters[primaryFilter!.id] === opt.value ? alpha(primaryColor, 0.08) : 'transparent',
                                                         border: '1px solid',
-                                                        borderColor: filters[categoryFilter!.id] === opt.value ? primaryColor : 'divider',
-                                                        color: filters[categoryFilter!.id] === opt.value ? config.theme.palette.primary.contrastText : 'text.secondary',
+                                                        borderColor: filters[primaryFilter!.id] === opt.value ? alpha(primaryColor, 0.5) : 'rgba(0, 0, 0, 0.12)',
+                                                        color: filters[primaryFilter!.id] === opt.value ? primaryColor : 'text.secondary',
                                                         fontFamily: fontFamily,
-                                                        fontWeight: filters[categoryFilter!.id] === opt.value ? 600 : 500,
-                                                        boxShadow: filters[categoryFilter!.id] === opt.value
-                                                            ? config.theme.shadows.colored
-                                                            : '0 2px 8px rgba(0,0,0,0.05)',
+                                                        fontWeight: filters[primaryFilter!.id] === opt.value ? 600 : 500,
+                                                        boxShadow: 'none', // Flat design
+                                                        transition: 'all 0.2s ease',
                                                         '&:hover': {
-                                                            bgcolor: filters[categoryFilter!.id] === opt.value ? primaryColor : alpha(primaryColor, 0.05),
-                                                            transform: 'translateY(-1px)'
+                                                            bgcolor: filters[primaryFilter!.id] === opt.value ? alpha(primaryColor, 0.12) : alpha(config.theme.palette.action.hover, 0.05),
+                                                            borderColor: filters[primaryFilter!.id] === opt.value ? primaryColor : 'text.primary',
                                                         }
                                                     }}
                                                 />
