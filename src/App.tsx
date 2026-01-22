@@ -5,7 +5,7 @@ import Sidebar from './components/Sidebar';
 import DiscoverForm from './components/DiscoverForm';
 import CatalogView from './components/CatalogView';
 import LoadingSpinner from './components/LoadingSpinner';
-import CSVUpload from './components/CSVUpload';
+import CatalogPublish from './components/CatalogPublish';
 import ONDCAdmin from './components/ONDCAdmin';
 import BPPAdmin from './components/BPPAdmin';
 import type { DiscoverRequest, CatalogResponse, RendererConfig } from './types';
@@ -228,13 +228,13 @@ function App() {
       <main className="app-main">
         <div className="results-card">
           <div className="results-header">
-            <h2 className="pane-title">BPP - Catalog Upload</h2>
+            <h2 className="pane-title">BPP - Catalog Publish</h2>
             <p className="pane-subtitle">
-              Upload your catalog CSV file to transform it into Beckn format
+              Upload your catalog JSON file to publish to the network
             </p>
           </div>
           
-          <CSVUpload />
+          <CatalogPublish />
         </div>
       </main>
     );
